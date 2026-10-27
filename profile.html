@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="alert.css">
+    <script src="alert.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BloodLink | Profile</title>
+
+    <link rel="stylesheet" href="profile.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    >
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+            <i class="fas fa-droplet"></i>
+            <h2>MicHost</h2>
+        </div>
+
+        <button class="close-btn" id="closeBtn">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <ul>
+            <li>
+                <a href="dashboard.html">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="inventory.html">
+                    <i class="fas fa-boxes-stacked"></i>
+                    Inventory
+                </a>
+            </li>
+
+            <li>
+                <a href="requests.html">
+                    <i class="fas fa-hand-holding-droplet"></i>
+                    Requests
+                </a>
+            </li>
+
+            <li>
+                <a href="donor.html">
+                    <i class="fas fa-users"></i>
+                    Donors
+                </a>
+            </li>
+
+            <li>
+                <a href="reports.html">
+                    <i class="fas fa-chart-line"></i>
+                    Reports
+                </a>
+            </li>
+
+            <li class="active">
+                <a href="profile.html">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </li>
+
+            <li>
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
+            </li>
+
+            <li>
+                <a href="logout.html">
+                    <i class="fas fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="topbar">
+
+            <button class="menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div>
+                <h1>My Profile</h1>
+                <p>Manage your MicHost account</p>
+            </div>
+
+        </header>
+
+
+        <!-- ACCOUNT TYPE SWITCH -->
+        <section class="profile-type">
+
+            <div>
+                <h3>Account Profile</h3>
+                <p>Your profile is based on your account type.</p>
+            </div>
+
+            <div class="switch">
+
+                <button
+                    id="individualBtn"
+                    class="switch-btn"
+                >
+                    <i class="fas fa-user"></i>
+                    Individual
+                </button>
+
+                <button
+                    id="hospitalBtn"
+                    class="switch-btn"
+                >
+                    <i class="fas fa-hospital"></i>
+                    Hospital
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             INDIVIDUAL PROFILE
+        ========================== -->
+
+        <section id="individualProfile" class="profile-section">
+
+            <div class="profile-card">
+
+                <div class="profile-header">
+
+                    <div class="profile-image">
+
+                        <img
+                            id="individualImage"
+                            src="images/default-user.png"
+                            alt="Profile"
+                        >
+
+                        <label for="individualPhoto">
+                            <i class="fas fa-camera"></i>
+                        </label>
+
+                        <input
+                            type="file"
+                            id="individualPhoto"
+                            accept="image/*"
+                            hidden
+                        >
+
+                    </div>
+
+                    <div>
+                        <h2>Individual Profile</h2>
+                        <p>Blood Donor</p>
+                    </div>
+
+                </div>
+
+
+                <form id="individualForm">
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <input
+                                type="text"
+                                value="User"
+                                id="individualName"
+                                name="full_name"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <input
+                                type="email"
+                                value="user@example.com"
+                                id="individualEmail"
+                                name="email"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input
+                                type="tel"
+                                value="+234 800 000 0000"
+                                name="phone"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Date of Birth</label>
+                            <input
+                                type="date"
+                                value="2000-01-01"
+                                name="date_of_birth"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Gender</label>
+
+                            <select name="gender">
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Blood Group</label>
+
+                            <select name="blood_group">
+                                <option>A+</option>
+                                <option>A-</option>
+                                <option>B+</option>
+                                <option>B-</option>
+                                <option>AB+</option>
+                                <option>AB-</option>
+                                <option>O+</option>
+                                <option>O-</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>State</label>
+
+                            <input
+                                type="text"
+                                value="Ekiti"
+                                name="state"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>City</label>
+
+                            <input
+                                type="text"
+                                value="Ado-Ekiti"
+                                name="city"
+                            >
+                        </div>
+
+                        <div class="input-group full">
+                            <label>Address</label>
+
+                            <textarea name="address">My residential address</textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Emergency Contact</label>
+
+                            <input
+                                type="text"
+                                placeholder="Emergency contact name"
+                                name="emergency_contact_name"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Emergency Phone</label>
+
+                            <input
+                                type="tel"
+                                placeholder="+234..."
+                                name="emergency_phone"
+                            >
+                        </div>
+
+                    </div>
+
+                    <button class="save-btn" type="submit">
+                        <i class="fas fa-save"></i>
+                        Save Individual Profile
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             HOSPITAL PROFILE
+        ========================== -->
+
+        <section
+            id="hospitalProfile"
+            class="profile-section"
+            style="display:none;"
+        >
+
+            <div class="profile-card">
+
+                <div class="profile-header">
+
+                    <div class="profile-image">
+
+                        <img
+                            id="hospitalImage"
+                            src="images/default-hospital.png"
+                            alt="Hospital"
+                        >
+
+                        <label for="hospitalPhoto">
+                            <i class="fas fa-camera"></i>
+                        </label>
+
+                        <input
+                            type="file"
+                            id="hospitalPhoto"
+                            accept="image/*"
+                            hidden
+                        >
+
+                    </div>
+
+                    <div>
+                        <h2>Hospital Profile</h2>
+                        <p>Registered BloodLink Hospital</p>
+                    </div>
+
+                </div>
+
+
+                <form id="hospitalForm">
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+                            <label>Hospital Name</label>
+
+                            <input
+                                type="text"
+                                value="City General Hospital"
+                                name="hospital_name"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Hospital Email</label>
+
+                            <input
+                                type="email"
+                                value="hospital@example.com"
+                                name="email"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Phone Number</label>
+
+                            <input
+                                type="tel"
+                                value="+234 800 000 0000"
+                                name="phone"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Registration Number</label>
+
+                            <input
+                                type="text"
+                                placeholder="Hospital registration number"
+                                name="registration_number"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>State</label>
+
+                            <input
+                                type="text"
+                                value="Ekiti"
+                                name="state"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>City</label>
+
+                            <input
+                                type="text"
+                                value="Ado-Ekiti"
+                                name="city"
+                            >
+                        </div>
+
+                        <div class="input-group full">
+                            <label>Hospital Address</label>
+
+                            <textarea name="address">
+Hospital address
+                            </textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Emergency Phone</label>
+
+                            <input
+                                type="tel"
+                                placeholder="+234..."
+                                name="emergency_phone"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label>Operating Hours</label>
+
+                            <input
+                                type="text"
+                                placeholder="8:00 AM - 8:00 PM"
+                                name="operating_hours"
+                            >
+                        </div>
+
+                    </div>
+
+                    <button class="save-btn" type="submit">
+                        <i class="fas fa-save"></i>
+                        Save Hospital Profile
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+    /* ==========================
+   LOGGED-IN USER TYPE
+========================== */
+
+// For testing:
+// "individual" = donor
+// "hospital"   = hospital
+
+const userType = localStorage.getItem("profileRole") === "Hospital" ? "hospital" : "individual";
+
+const individualBtn =
+    document.getElementById("individualBtn");
+
+const hospitalBtn =
+    document.getElementById("hospitalBtn");
+
+const individualProfile =
+    document.getElementById("individualProfile");
+
+const hospitalProfile =
+    document.getElementById("hospitalProfile");
+
+
+/* ==========================
+   SHOW PROFILE
+========================== */
+
+function showProfile(type) {
+
+    if (type === "hospital") {
+
+        hospitalProfile.style.display = "block";
+        individualProfile.style.display = "none";
+
+        hospitalBtn.classList.add("active");
+        individualBtn.classList.remove("active");
+
+    } else {
+
+        individualProfile.style.display = "block";
+        hospitalProfile.style.display = "none";
+
+        individualBtn.classList.add("active");
+        hospitalBtn.classList.remove("active");
+
+    }
+
+}
+
+
+/* ==========================
+   INITIAL PROFILE
+========================== */
+
+function setProfileValue(formId, fieldName, value) {
+    const field = document.getElementById(formId)?.elements.namedItem(fieldName);
+    if (field && value !== null && value !== undefined) field.value = value;
+}
+
+async function loadProfileData() {
+    if (window.location.protocol === "file:") return;
+
+    try {
+        const endpoint = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""}/php/profile/get-profile.php`;
+        const response = await fetch(endpoint, { credentials: "include" });
+        const data = response.ok ? await response.json() : null;
+
+        if (!data?.success || !data.user) return;
+
+        const user = data.user;
+        const name = user.hospital_name || `${user.first_name || ""} ${user.last_name || ""}`.trim() || user.email || "User";
+        const email = user.email || "user@example.com";
+        const phone = user.phone || "";
+        const image = user.profile_image || "images/default-user.png";
+
+        localStorage.setItem("profileName", name);
+        localStorage.setItem("profileRole", user.role === "hospital" ? "Hospital" : "Donor");
+        localStorage.setItem("profileImage", image);
+
+        const individualName = document.getElementById("individualName");
+        if (individualName) individualName.value = name;
+        const individualEmail = document.getElementById("individualEmail");
+        if (individualEmail) individualEmail.value = email;
+
+        ["phone", "date_of_birth", "gender", "blood_group", "state", "city", "address", "emergency_contact_name", "emergency_phone"].forEach((field) => {
+            setProfileValue("individualForm", field, field === "phone" ? phone : user[field]);
+        });
+
+        const individualImg = document.getElementById("individualImage");
+        if (individualImg) individualImg.src = image;
+
+        if (user.role === "hospital") {
+            ["hospital_name", "email", "phone", "registration_number", "state", "city", "address", "emergency_phone", "operating_hours"].forEach((field) => {
+                const value = field === "email" ? email : field === "phone" ? phone : user[field];
+                setProfileValue("hospitalForm", field, value);
+            });
+            const hospitalImg = document.getElementById("hospitalImage");
+            if (hospitalImg) hospitalImg.src = image;
+            showProfile("hospital");
+        } else {
+            showProfile("individual");
+        }
+    } catch (error) {
+        console.warn("Profile loading failed:", error);
+    }
+}
+
+showProfile(userType);
+loadProfileData();
+
+/* ==========================
+   SWITCH PROFILE VIEW
+========================== */
+
+individualBtn.addEventListener("click", () => {
+
+    showProfile("individual");
+
+});
+
+hospitalBtn.addEventListener("click", () => {
+
+    showProfile("hospital");
+
+});
+
+
+/* ==========================
+   PROFILE IMAGE
+========================== */
+
+const individualPhoto =
+    document.getElementById("individualPhoto");
+
+const individualImage =
+    document.getElementById("individualImage");
+
+individualPhoto.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (file) {
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+
+            individualImage.src = e.target.result;
+
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+
+});
+
+
+const hospitalPhoto =
+    document.getElementById("hospitalPhoto");
+
+const hospitalImage =
+    document.getElementById("hospitalImage");
+
+hospitalPhoto.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (file) {
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+
+            hospitalImage.src = e.target.result;
+
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+
+});
+
+
+async function saveProfile(form, role, photoInputId, successMessage) {
+    const endpoint = new URL("php/profile/update-profile.php", window.location.href);
+    const payload = new FormData(form);
+    payload.set("role", role);
+
+    if (role === "donor") {
+        const fullName = String(payload.get("full_name") || "").trim();
+        const nameParts = fullName.split(/\s+/);
+        if (nameParts.length < 2 || !nameParts[0] || !nameParts[1]) {
+            alert("Please enter your first and last name.");
+            return;
+        }
+        payload.delete("full_name");
+        payload.set("first_name", nameParts[0]);
+        payload.set("last_name", nameParts.slice(1).join(" "));
+    }
+
+    const photo = document.getElementById(photoInputId).files[0];
+    if (photo) payload.set("profile_image", photo);
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
+    try {
+        const response = await fetch(endpoint, {
+            method: "POST",
+            credentials: "include",
+            body: payload
+        });
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Unable to save profile.");
+        }
+
+        if (result.profile_image) {
+            const image = document.getElementById(role === "hospital" ? "hospitalImage" : "individualImage");
+            image.src = result.profile_image;
+            localStorage.setItem("profileImage", result.profile_image);
+        }
+        localStorage.setItem("profileName", role === "hospital" ? payload.get("hospital_name") : `${payload.get("first_name")} ${payload.get("last_name")}`);
+        localStorage.setItem("profileRole", role === "hospital" ? "Hospital" : "Donor");
+        alert(successMessage);
+    } catch (error) {
+        alert(error.message || "Unable to save profile. Please try again.");
+    } finally {
+        submitButton.disabled = false;
+    }
+}
+
+document.getElementById("individualForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    saveProfile(this, "donor", "individualPhoto", "Individual profile updated successfully!");
+});
+
+document.getElementById("hospitalForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    saveProfile(this, "hospital", "hospitalPhoto", "Hospital profile updated successfully!");
+});
+
+
+/* ==========================
+   MOBILE SIDEBAR
+========================== */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const menuBtn =
+    document.getElementById("menuBtn");
+
+const closeBtn =
+    document.getElementById("closeBtn");
+
+const overlay =
+    document.getElementById("overlay");
+
+
+function openSidebar() {
+
+    sidebar.classList.add("active");
+
+    overlay.classList.add("active");
+
+}
+
+
+function closeSidebar() {
+
+    sidebar.classList.remove("active");
+
+    overlay.classList.remove("active");
+
+}
+
+
+menuBtn.addEventListener("click", openSidebar);
+
+closeBtn.addEventListener("click", closeSidebar);
+
+overlay.addEventListener("click", closeSidebar);
+
+
+/* Close sidebar after clicking menu */
+
+document
+    .querySelectorAll(".sidebar a")
+    .forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            if (window.innerWidth <= 900) {
+
+                closeSidebar();
+
+            }
+
+        });
+
+    });
+
+
+/* Escape key */
+
+document.addEventListener("keydown", (e) => {
+
+    if (e.key === "Escape") {
+
+        closeSidebar();
+
+    }
+
+});
+
+
+    </script>
+
+</body>
+</html>

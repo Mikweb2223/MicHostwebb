@@ -1,0 +1,496 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#fff5f5,#ffeaea);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow-x:hidden;
+}
+
+.background{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+    position:relative;
+}
+
+/* Floating Blood Cells */
+
+.blood{
+    position:absolute;
+    width:60px;
+    animation:float 8s ease-in-out infinite;
+    opacity:.15;
+}
+
+.blood1{
+    top:8%;
+    left:5%;
+}
+
+.blood2{
+    right:8%;
+    top:18%;
+}
+
+.blood3{
+    bottom:15%;
+    left:10%;
+}
+
+.blood4{
+    bottom:8%;
+    right:10%;
+}
+
+@keyframes float{
+
+0%,100%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-25px);
+}
+
+}
+
+.login-card{
+
+    width:100%;
+    max-width:550px;
+
+    background:rgba(255,255,255,.85);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.12);
+
+    animation:fadeIn .8s;
+
+}
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
+.back-btn{
+
+width:45px;
+height:45px;
+
+border:none;
+
+border-radius:50%;
+
+background:#E53935;
+
+color:#fff;
+
+cursor:pointer;
+
+margin-bottom:20px;
+
+transition:.3s;
+
+}
+
+.back-btn:hover{
+
+transform:scale(1.08);
+
+}
+
+.logo{
+
+text-align:center;
+
+margin-bottom:20px;
+
+}
+
+.logo img{
+
+width:90px;
+
+}
+
+.login-card h1{
+
+text-align:center;
+
+margin-bottom:10px;
+
+color:#C62828;
+
+font-size:30px;
+
+}
+
+.login-card p{
+
+text-align:center;
+
+margin-bottom:30px;
+
+color:#666;
+
+}
+
+.tabs{
+
+display:flex;
+
+background:#f2f2f2;
+
+border-radius:50px;
+
+padding:5px;
+
+margin-bottom:30px;
+
+}
+
+.tab{
+
+flex:1;
+
+padding:12px;
+
+border:none;
+
+background:none;
+
+border-radius:50px;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+.tab.active{
+
+background:#E53935;
+
+color:#fff;
+
+}
+
+label{
+
+display:block;
+
+margin-bottom:8px;
+
+margin-top:18px;
+
+font-weight:600;
+
+color:#444;
+
+}
+
+.input-box{
+
+display:flex;
+
+align-items:center;
+
+background:#fff;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+padding:0 15px;
+
+height:55px;
+
+transition:.3s;
+
+}
+
+.input-box:focus-within{
+
+border-color:#E53935;
+
+box-shadow:0 0 0 3px rgba(229,57,53,.15);
+
+}
+
+.input-box i{
+
+color:#999;
+
+font-size:18px;
+
+}
+
+.input-box input{
+
+flex:1;
+
+border:none;
+
+outline:none;
+
+padding:15px;
+
+font-size:15px;
+
+background:transparent;
+
+}
+
+.toggleSignup,
+.toggleConfirm{
+
+cursor:pointer;
+
+}
+
+input[type=file]{
+
+width:100%;
+
+padding:12px;
+
+cursor:pointer;
+
+}
+
+input[type=file]::-webkit-file-upload-button{
+
+background:#E53935;
+
+color:#fff;
+
+border:none;
+
+padding:10px 18px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+margin-right:10px;
+
+}
+
+.login-btn{
+
+width:100%;
+
+margin-top:30px;
+
+height:55px;
+
+border:none;
+
+border-radius:12px;
+
+background:#E53935;
+
+color:#fff;
+
+font-size:17px;
+
+font-weight:600;
+
+cursor:pointer;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:10px;
+
+transition:.3s;
+
+}
+
+.login-btn:hover{
+
+background:#C62828;
+
+transform:translateY(-3px);
+
+}
+
+.login-btn span{
+
+transition:.3s;
+
+}
+
+.login-btn:hover span{
+
+transform:translateX(5px);
+
+}
+
+.terms-consent{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin:4px 0 20px;
+    color:#666;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.terms-consent input{
+    flex:0 0 auto;
+    margin-top:4px;
+    accent-color:#E53935;
+}
+
+.terms-consent a{
+    color:#E53935;
+    font-weight:600;
+}
+
+.bottom-text{
+
+margin-top:25px;
+
+text-align:center;
+
+color:#666;
+
+}
+
+.bottom-text a{
+
+color:#E53935;
+
+font-weight:600;
+
+text-decoration:none;
+
+}
+
+.bottom-text a:hover{
+
+text-decoration:underline;
+
+}
+
+
+@media(max-width:768px){
+
+.login-card{
+
+padding:30px 20px;
+
+}
+
+.login-card h1{
+
+font-size:24px;
+
+}
+
+.tabs{
+
+flex-direction:column;
+
+border-radius:15px;
+
+}
+
+.tab{
+
+margin-bottom:5px;
+
+}
+.upload-box{
+    min-height:200px;
+    padding:20px;
+}
+
+.upload-box img{
+    width:70px;
+    height:70px;
+}
+
+.upload-box h3{
+    font-size:18px;
+}
+
+.upload-box p{
+    font-size:13px;
+}
+
+.upload-box.preview img{
+    height:180px;
+}
+
+}
+
+
+
+
+@media(max-width:480px){
+
+body{
+
+padding:15px;
+
+}
+
+.login-card{
+
+border-radius:20px;
+
+padding:20px;
+
+}
+
+.logo img{
+
+width:70px;
+
+}
+
+.login-btn{
+
+font-size:15px;
+
+}
+
+}
+

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michost</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<div class="phone">
+
+    <div class="circle"></div>
+
+    <div class="logo">
+        <i class="fa-solid fa-droplet"></i>
+    </div>
+    <h1>Michost</h1>
+    <p class="tagline">
+        Donate blood. Save lives.
+    </p>
+
+    
+
+    <div class="buttons">
+
+        <button class="signin">
+            Sign In
+        </button>
+
+        <button class="signup">
+            Create Account
+        </button>
+
+    </div>
+
+    <div class="bottom">
+        <a href="login.html">Individual Account</a>
+        <a href="hospital.html">
+            Hospital Account
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+const signIn = document.querySelector(".signin");
+const signUp = document.querySelector(".signup");
+
+signIn.addEventListener("click", () => {
+    window.location.href = "login.html";
+});
+
+signUp.addEventListener("click", () => {
+    window.location.href = "signup.html";
+});
+
+// document.querySelector(".bottom a").addEventListener("click", function(e){
+//     if(this.textContent.includes("Skip")){
+//         e.preventDefault();
+
+//         alert("Continue as Guest");
+//         // window.location.href="dashboard.html";
+//     }
+// });
+</script>
+
+</body>
+</html>

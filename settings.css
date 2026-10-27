@@ -1,0 +1,449 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f5f7fb;
+    color: #333;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background: #c40018;
+    z-index: 2000;
+    overflow-y: auto;
+    transition: left 0.35s ease;
+}
+
+.main {
+    margin-left: 260px;
+    padding: 30px;
+}
+
+.main header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 50px;
+}
+
+.main header h2 {
+    margin: 0 auto;
+    font-size: 28px;
+}
+
+/* SIDEBAR MENU */
+
+.sidebar ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 8px;
+}
+
+.sidebar ul li {
+    width: 100%;
+    color: white;
+    margin: 0;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 14px 16px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li.active a {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.sidebar ul li a i {
+    width: 22px;
+    font-size: 17px;
+}
+
+
+.overlay,
+#overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.3s ease;
+}
+
+.overlay.active,
+#overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Close Button */
+
+.close-btn {
+    display: none;
+}
+
+.menu-btn {
+    border: none;
+    background: transparent;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.settings-card{
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    margin:25px 0;
+
+}
+
+.settings-card h3{
+
+    color:#E53935;
+
+    margin-bottom:20px;
+
+    font-size:22px;
+    text-align: center;
+
+}
+
+/* Setting item */
+
+.setting-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 0;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.setting-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.setting-item span{
+
+    font-size:16px;
+
+    font-weight:500;
+
+    color:#333;
+
+}
+
+/* SWITCH */
+
+.switch{
+
+    position:relative;
+
+    display:inline-block;
+
+    width:55px;
+
+    height:30px;
+
+}
+
+.switch input{
+
+    opacity:0;
+
+    width:0;
+
+    height:0;
+
+}
+
+.slider{
+
+    position:absolute;
+
+    inset:0;
+
+    background:#ccc;
+
+    border-radius:50px;
+
+    transition:.3s;
+
+    cursor:pointer;
+
+}
+
+.slider::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:24px;
+
+    height:24px;
+
+    left:3px;
+
+    top:3px;
+
+    background:#fff;
+
+    border-radius:50%;
+
+    transition:.3s;
+
+}
+
+.switch input:checked + .slider{
+
+    background:#E53935;
+
+}
+
+.switch input:checked + .slider::before{
+
+    transform:translateX(25px);
+
+}
+
+/* Inputs */
+
+.settings-card input,
+.settings-card select{
+
+    width:100%;
+
+    height:50px;
+
+    margin:10px 0;
+
+    padding:0 15px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.settings-card input:focus,
+.settings-card select:focus{
+
+    border-color:#E53935;
+
+}
+
+/* Buttons */
+
+.settings-card button{
+
+    width:100%;
+
+    height:50px;
+
+    margin-top:15px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#E53935;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+.settings-card button:hover{
+
+    background:#C62828;
+
+    transform:translateY(-2px);
+
+}
+
+
+
+#logout{
+
+    background:#424242;
+
+}
+
+#logout:hover{
+
+    background:#212121;
+
+}
+
+
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.settings-card{
+
+padding:20px;
+
+}
+
+.setting-item{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:12px;
+
+}
+
+.main {
+    margin-left: 0;
+    padding: 20px;
+}
+
+.main header {
+    justify-content: center;
+    text-align: center;
+}
+
+/* Sidebar */
+
+    .sidebar {
+        left: -280px;
+        display: block;
+        width: 260px;
+        top: 0;
+        height: 100vh;
+        position: fixed;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+/* Close button */
+
+    .close-btn {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+
+        top: 15px;
+        right: 15px;
+
+        width: 40px;
+        height: 40px;
+
+        border: none;
+        background: rgba(255,255,255,.15);
+
+        color: white;
+
+        border-radius: 50%;
+        font-size: 20px;
+
+        cursor: pointer;
+
+        z-index: 10;
+    }
+
+    .close-btn:hover {
+        background: rgba(255,255,255,.25);
+    }
+
+ /* Menu button */
+
+    .menu-btn {
+        display: flex;
+        position: absolute;
+        left: 0;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 45px;
+        height: 45px;
+
+        color: #c40018;
+
+        background: transparent;
+
+        border: none;
+
+        cursor: pointer;
+    }
+
+
+}
+
+@media(max-width:480px){
+
+.settings-card{
+
+padding:15px;
+
+}
+
+.settings-card h3{
+
+font-size:18px;
+
+}
+
+.settings-card button{
+
+font-size:14px;
+
+}
+
+}

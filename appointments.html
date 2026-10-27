@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" href="alert.css">
+<script src="alert.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Appointments | BloodLink</title>
+
+<link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet" href="appointments.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar" id="sidebar">
+
+<button class="close-btn" id="closeBtn">
+<i class="fas fa-times"></i>
+</button>
+
+<div class="logo">
+
+<i class="fa-solid fa-droplet"></i>
+
+<h2>MicHost</h2>
+
+</div>
+
+<ul>
+
+<li onclick="location.href='dashboard.html'">
+
+<i class="fa-solid fa-house"></i>
+
+<span>Dashboard</span>
+
+</li>
+
+<li onclick="location.href='inventory.html'">
+
+<i class="fa-solid fa-warehouse"></i>
+
+<span>Inventory</span>
+
+</li>
+
+<li onclick="location.href='donor.html'">
+
+<i class="fa-solid fa-users"></i>
+
+<span>Donors</span>
+
+</li>
+
+<li onclick="location.href='requests.html'">
+
+<i class="fa-solid fa-hand-holding-droplet"></i>
+
+<span>Blood Requests</span>
+
+</li>
+
+<li class="active">
+
+<i class="fa-solid fa-calendar-check"></i>
+
+<span>Appointments</span>
+
+</li>
+
+<li onclick="location.href='reports.html'">
+
+<i class="fa-solid fa-chart-line"></i>
+
+<span>Reports</span>
+
+</li>
+
+<li onclick="location.href='profile.html'">
+
+<i class="fa-solid fa-user"></i>
+
+<span>Profile</span>
+
+</li>
+
+<li onclick="location.href='settings.html'">
+
+<i class="fa-solid fa-gear"></i>
+
+<span>Settings</span>
+
+</li>
+
+<li onclick="location.href='logout.html'">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<span>Logout</span>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<header>
+
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="overlay">
+
+</div>
+
+<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+
+<i class="fa-solid fa-bars"></i>
+</button>
+
+<h2>Appointments</h2>
+
+
+        <!-- NOTIFICATION -->
+        <a href="notification.html" class="notification-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span></span>
+        </a>
+
+
+        <!-- PROFILE -->
+        <a href="profile.html" class="header-profile">
+
+            <div class="header-profile-image">
+                <img
+                    id="headerProfileImage"
+                    src="images/default-user.png"
+                    alt="Profile"
+                >
+            </div>
+
+            <div class="header-profile-info">
+                <strong id="headerProfileName">
+                    Michael Adeleke
+                </strong>
+
+                <span id="headerProfileRole">
+                    Individual
+                </span>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </a>
+
+</header>
+
+<!-- Statistics -->
+
+<section class="appointment-cards">
+
+<div class="appointment-card blue">
+
+<h3>Total</h3>
+
+<h1>164</h1>
+
+</div>
+
+<div class="appointment-card green">
+
+<h3>Completed</h3>
+
+<h1>121</h1>
+
+</div>
+
+<div class="appointment-card orange">
+
+<h3>Upcoming</h3>
+
+<h1>32</h1>
+
+</div>
+
+<div class="appointment-card red">
+
+<h3>Cancelled</h3>
+
+<h1>11</h1>
+
+</div>
+
+</section>
+
+<!-- Search -->
+
+<div class="appointment-tools">
+
+<input
+type="text"
+id="searchAppointment"
+placeholder="Search donor...">
+
+<input
+type="date"
+id="appointmentDate">
+
+<button id="addAppointment">
+
+<i class="fa-solid fa-plus"></i>
+
+Book Appointment
+
+</button>
+
+</div>
+
+<!-- Table -->
+
+<div class="appointment-table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Donor</th>
+
+<th>Blood</th>
+
+<th>Date</th>
+
+<th>Time</th>
+
+<th>Hospital</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="appointmentTable">
+
+<tr>
+
+<td>John Doe</td>
+
+<td>O+</td>
+
+<td>25 Aug 2026</td>
+
+<td>09:00 AM</td>
+
+<td>City Hospital</td>
+
+<td>
+
+<span class="approved">
+
+Confirmed
+
+</span>
+
+</td>
+
+<td>
+
+<button class="view">
+
+<i class="fa-solid fa-eye"></i>
+
+</button>
+
+<button class="edit">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+<button class="delete">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- Modal -->
+
+<div class="modal" id="appointmentModal">
+
+<div class="modal-content">
+
+<h2>Book Appointment</h2>
+
+<form id="appointmentForm">
+
+<input
+type="text"
+placeholder="Donor Name"
+required>
+
+<select required>
+
+<option value="">Blood Group</option>
+
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>AB+</option>
+<option>AB-</option>
+<option>O+</option>
+<option>O-</option>
+
+</select>
+
+<input
+type="date"
+required>
+
+<input
+type="time"
+required>
+
+<input
+type="text"
+placeholder="Hospital Name"
+required>
+
+<div class="modal-buttons">
+
+<button type="submit">
+
+Book
+
+</button>
+
+<button
+type="button"
+id="closeAppointment">
+
+Cancel
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const closeBtn = document.getElementById("closeBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+    /*=====================================
+        APPOINTMENT MANAGEMENT
+======================================*/
+
+const appointmentModal = document.getElementById("appointmentModal");
+const addAppointmentBtn = document.getElementById("addAppointment");
+const closeAppointment = document.getElementById("closeAppointment");
+const appointmentForm = document.getElementById("appointmentForm");
+const appointmentTable = document.getElementById("appointmentTable");
+const searchAppointment = document.getElementById("searchAppointment");
+const appointmentDate = document.getElementById("appointmentDate");
+
+let appointments = [];
+
+async function loadAppointments() {
+    try {
+        const response = await fetch("php/appointments/list.php", { credentials: "include" });
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message || "Unable to load appointments.");
+        }
+
+        appointments = (data.appointments || []).map(item => ({
+            donor: item.donor_name,
+            blood: item.blood_group,
+            date: item.appointment_date,
+            time: item.appointment_time,
+            hospital: item.hospital_name,
+            status: item.status
+        }));
+
+        renderAppointments();
+    } catch (error) {
+        console.error("Failed to load appointments:", error);
+        appointments = [];
+        renderAppointments();
+    }
+}
+
+
+/*=====================================
+        RENDER TABLE
+======================================*/
+
+function renderAppointments(){
+
+appointmentTable.innerHTML="";
+
+appointments.forEach((appointment,index)=>{
+
+let badge="approved";
+
+if(appointment.status==="Pending") badge="pending";
+
+if(appointment.status==="Cancelled") badge="cancelled";
+
+appointmentTable.innerHTML += `
+
+<tr>
+
+<td>${appointment.donor}</td>
+
+<td>${appointment.blood}</td>
+
+<td>${appointment.date}</td>
+
+<td>${appointment.time}</td>
+
+<td>${appointment.hospital}</td>
+
+<td>
+
+<span class="${badge}">
+${appointment.status}
+</span>
+
+</td>
+
+<td>
+
+<button class="view"
+onclick="viewAppointment(${index})">
+
+<i class="fa-solid fa-eye"></i>
+
+</button>
+
+<button class="edit"
+onclick="editAppointment(${index})">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+<button class="delete"
+onclick="deleteAppointment(${index})">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+localStorage.setItem(
+"appointments",
+JSON.stringify(appointments)
+);
+
+updateCards();
+
+}
+
+loadAppointments();
+
+/*=====================================
+OPEN/CLOSE MODAL
+======================================*/
+
+addAppointmentBtn.onclick=()=>{
+
+appointmentModal.classList.add("active");
+
+}
+
+closeAppointment.onclick=()=>{
+
+appointmentModal.classList.remove("active");
+
+}
+
+/*=====================================
+ADD APPOINTMENT
+======================================*/
+
+appointmentForm.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+
+    const input = appointmentForm.querySelectorAll("input,select");
+    const donor = input[0].value.trim();
+    const blood = input[1].value;
+    const date = input[2].value;
+    const time = input[3].value;
+    const hospital = input[4].value.trim();
+
+    if (!donor || !blood || !date || !time || !hospital) {
+        alert("Please fill in all appointment details.");
+        return;
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append("donor", donor);
+        formData.append("blood", blood);
+        formData.append("date", date);
+        formData.append("time", time);
+        formData.append("hospital", hospital);
+
+        const response = await fetch("php/appointments/create.php", {
+            method: "POST",
+            body: formData,
+            credentials: "include"
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message || "Unable to save appointment.");
+        }
+
+        appointmentForm.reset();
+        appointmentModal.classList.remove("active");
+        await loadAppointments();
+        alert(data.message || "Appointment booked successfully!");
+    } catch (error) {
+        console.error("Appointment creation failed:", error);
+        alert(error.message || "Unable to create appointment.");
+    }
+});
+
+/*=====================================
+VIEW
+======================================*/
+
+function viewAppointment(index){
+
+const a=appointments[index];
+
+alert(
+
+`Donor: ${a.donor}
+
+Blood Group: ${a.blood}
+
+Hospital: ${a.hospital}
+
+Date: ${a.date}
+
+Time: ${a.time}
+
+Status: ${a.status}`
+
+);
+
+}
+
+/*=====================================
+EDIT
+======================================*/
+
+function editAppointment(index){
+
+const donor=prompt(
+"Donor Name",
+appointments[index].donor
+);
+
+if(!donor) return;
+
+appointments[index].donor=donor;
+
+renderAppointments();
+
+}
+
+/*=====================================
+DELETE
+======================================*/
+
+function deleteAppointment(index){
+
+if(confirm("Delete appointment?")){
+
+appointments.splice(index,1);
+
+renderAppointments();
+
+}
+
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const currentName = localStorage.getItem("profileName") || "User";
+    const currentRole = localStorage.getItem("profileRole") || "Donor";
+    const currentImage = localStorage.getItem("profileImage") || "images/default-user.png";
+
+    const name = document.getElementById("headerProfileName");
+    const role = document.getElementById("headerProfileRole");
+    const image = document.getElementById("headerProfileImage");
+
+    if (name) name.textContent = currentName;
+    if (role) role.textContent = currentRole;
+    if (image) image.src = currentImage;
+
+    if (window.location.protocol === "file:") return;
+
+    try {
+        const endpoint = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""}/php/profile/get-profile.php`;
+        const response = await fetch(endpoint, { credentials: "include" });
+        const data = response.ok ? await response.json() : null;
+
+        if (data?.success && data.user) {
+            const fetchedName = data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || data.user.email || "User";
+            const fetchedRole = data.user.role === "hospital" ? "Hospital" : "Donor";
+            const fetchedImage = data.user.profile_image || "images/default-user.png";
+
+            localStorage.setItem("profileName", fetchedName);
+            localStorage.setItem("profileRole", fetchedRole);
+            localStorage.setItem("profileImage", fetchedImage);
+
+            if (name) name.textContent = fetchedName;
+            if (role) role.textContent = fetchedRole;
+            if (image) image.src = fetchedImage;
+        }
+    } catch (error) {
+        console.warn("Profile refresh failed:", error);
+    }
+});
+
+/*=====================================
+SEARCH
+======================================*/
+
+searchAppointment.addEventListener("keyup",()=>{
+
+const keyword=
+searchAppointment.value.toLowerCase();
+
+const rows=
+appointmentTable.querySelectorAll("tr");
+
+rows.forEach(row=>{
+
+const donor=
+row.children[0].innerText.toLowerCase();
+
+const hospital=
+row.children[4].innerText.toLowerCase();
+
+row.style.display=
+
+donor.includes(keyword) ||
+
+hospital.includes(keyword)
+
+? ""
+
+: "none";
+
+});
+
+});
+
+/*=====================================
+DATE FILTER
+======================================*/
+
+appointmentDate.addEventListener("change",()=>{
+
+const date=appointmentDate.value;
+
+const rows=
+appointmentTable.querySelectorAll("tr");
+
+rows.forEach(row=>{
+
+row.style.display=
+
+date==="" ||
+
+row.children[2].innerText===date
+
+? ""
+
+: "none";
+
+});
+
+});
+
+/*=====================================
+UPDATE STATISTICS
+======================================*/
+
+function updateCards(){
+
+const cards=document.querySelectorAll(".appointment-card h1");
+
+if(cards.length<4) return;
+
+cards[0].innerText=appointments.length;
+
+cards[1].innerText=
+
+appointments.filter(a=>
+
+a.status==="Confirmed"
+
+).length;
+
+cards[2].innerText=
+
+appointments.filter(a=>
+
+a.status==="Pending"
+
+).length;
+
+cards[3].innerText=
+
+appointments.filter(a=>
+
+a.status==="Cancelled"
+
+).length;
+
+}
+
+/*=====================================
+CLOSE MODAL
+======================================*/
+
+window.onclick=(e)=>{
+
+if(e.target===appointmentModal){
+
+appointmentModal.classList.remove("active");
+
+}
+
+}
+</script>
+
+</body>
+
+</html>

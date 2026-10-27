@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MicHost Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar" id="sidebar">
+    
+<button class="close-btn" id="closeBtn">
+<i class="fas fa-times"></i>
+</button>
+
+<div class="logo">
+
+<i class="fa-solid fa-droplet"></i>
+
+<h2>MicHost</h2>
+
+</div>
+
+<ul>
+
+<li class="active">
+<i class="fa-solid fa-house"></i>
+<span>Dashboard</span>
+</li>
+
+<li><a href="inventory.html">
+<i class="fa-solid fa-warehouse"></i>
+<span>Blood Inventory</span>
+</a>
+</li>
+
+<li><a href="requests.html">
+<i class="fa-solid fa-hand-holding-droplet"></i>
+<span>Blood Requests</span>
+</a>
+</li>
+
+<li><a href="donor.html">
+<i class="fa-solid fa-users"></i>
+<span>Donors</span>
+</a>
+</li>
+
+<li><a href="reports.html">
+<i class="fa-solid fa-chart-line"></i>
+<span>Reports</span>
+</a>
+</li>
+
+
+<li><a href="settings.html">
+<i class="fa-solid fa-gear"></i>
+<span>Settings</span>
+</a>
+</li>
+
+<li><a href="logout.html">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span>Logout</span>
+</a>
+</li>
+
+</ul>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<header>
+
+<!-- Mobile sidebar overlay -->
+<div class="overlay" id="overlay">
+
+</div>
+
+<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+
+<i class="fa-solid fa-bars"></i>
+</button>
+
+<div class="search">
+
+<i class="fa-solid fa-search"></i>
+
+<input
+type="text"
+placeholder="Search...">
+
+</div>
+
+    <!-- NOTIFICATION -->
+    <a href="notification.html" class="notification-btn">
+    <i class="fa-regular fa-bell"></i>
+    <span></span>
+    </a>
+
+<div class="top-profile">
+    <div class="top-profile-info">
+        <div class="top-profile-image">
+            <img
+                id="topProfileImage"
+                src="images/default-user.png"
+                alt="Profile"
+            >
+        </div>
+
+        <div class="top-profile-text">
+            <strong id="topProfileName">User</strong>
+            <span id="topProfileRole">Donor</span>
+        </div>
+    </div>
+
+    <a href="profile.html" class="profile-link">
+        <i class="fas fa-chevron-down"></i>
+    </a>
+</div>
+
+</header>
+
+<!-- Welcome -->
+
+<section class="welcome">
+
+<h1>Welcome Back 👋</h1>
+
+<p>Manage blood donations and hospital requests.</p>
+
+</section>
+
+<!-- Cards -->
+
+<section class="cards">
+
+<div class="card">
+
+<i class="fa-solid fa-droplet"></i>
+
+<h2>548</h2>
+
+<p>Blood Units</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-users"></i>
+
+<h2>186</h2>
+
+<p>Registered Donors</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-hand-holding-droplet"></i>
+
+<h2>32</h2>
+
+<p>Pending Requests</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-calendar-check"></i>
+
+<h2>14</h2>
+
+<p>Appointments</p>
+
+</div>
+
+</section>
+
+<!-- Chart -->
+
+<div class="chart-box">
+
+    <h2>Blood Inventory</h2>
+
+    <canvas id="bloodChart"></canvas>
+
+</div>
+
+<!-- Recent Requests -->
+
+<section class="table-box" id="recentRequestsSection">
+
+<h2>Recent Blood Requests</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Patient</th>
+
+<th>Blood Group</th>
+
+<th>Status</th>
+
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>John Doe</td>
+
+<td>O+</td>
+
+<td><span class="pending">Pending</span></td>
+
+<td>14 Jul 2026</td>
+
+</tr>
+
+<tr>
+
+<td>Mary James</td>
+
+<td>A-</td>
+
+<td><span class="approved">Approved</span></td>
+
+<td>13 Jul 2026</td>
+
+</tr>
+
+<tr>
+
+<td>Samuel David</td>
+
+<td>AB+</td>
+
+<td><span class="pending">Pending</span></td>
+
+<td>12 Jul 2026</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</section>
+
+</div>
+
+<script>
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const closeBtn = document.getElementById("closeBtn");
+const overlay = document.getElementById("overlay");
+
+function openSidebar() {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+
+    document.body.style.overflow = "hidden";
+}
+
+function closeSidebar() {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+    document.body.style.overflow = "";
+}
+
+menuBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    openSidebar();
+});
+
+closeBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    closeSidebar();
+});
+
+overlay.addEventListener("click", function () {
+    closeSidebar();
+});
+
+document.querySelectorAll(".sidebar a").forEach(function (link) {
+
+    link.addEventListener("click", function () {
+
+        if (window.innerWidth <= 900) {
+            closeSidebar();
+        }
+
+    });
+
+});
+
+document.addEventListener("keydown", function (e) {
+
+    if (e.key === "Escape") {
+        closeSidebar();
+    }
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const canvas = document.getElementById("bloodChart");
+
+    if (!canvas) {
+        console.error("ERROR: #bloodChart was not found.");
+        return;
+    }
+
+    if (typeof Chart === "undefined") {
+        console.error("ERROR: Chart.js has not loaded.");
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+
+    const bloodChart = new Chart(ctx, {
+
+        type: "bar",
+
+        data: {
+            labels: [
+                "A+",
+                "A-",
+                "B+",
+                "B-",
+                "AB+",
+                "AB-",
+                "O+",
+                "O-"
+            ],
+
+            datasets: [
+                {
+                    label: "Blood Units",
+
+                    data: [
+                        120,
+                        65,
+                        90,
+                        40,
+                        35,
+                        20,
+                        150,
+                        45
+                    ],
+        backgroundColor: [
+            "#c40018", // A+
+            "#e53935", // A-
+            "#d81b60", // B+
+            "#ad1457", // B-
+            "#8e24aa", // AB+
+            "#6a1b9a", // AB-
+            "#b71c1c", // O+
+            "#ef5350"  // O-
+        ],
+
+        borderColor: [
+            "#a00014",
+            "#c62828",
+            "#ad1457",
+            "#880e4f",
+            "#6a1b9a",
+            "#4a148c",
+            "#8e0000",
+            "#d32f2f"
+        ],
+
+                    borderWidth: 0,
+
+                    borderRadius: 8,
+
+                    maxBarThickness: 55
+                }
+            ]
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            animation: {
+                duration: 800
+            },
+
+            plugins: {
+
+                legend: {
+                    display: true
+                }
+
+            },
+
+            scales: {
+
+                x: {
+                    grid: {
+                        display: false
+                    }
+                },
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+});
+const counters = document.querySelectorAll(".card h2");
+
+counters.forEach(counter=>{
+
+const target = Number(counter.innerText);
+
+let count = 0;
+
+const speed = target / 80;
+
+const updateCounter = ()=>{
+
+count += speed;
+
+if(count < target){
+
+counter.innerText = Math.floor(count);
+
+requestAnimationFrame(updateCounter);
+
+}else{
+
+counter.innerText = target;
+
+}
+
+};
+
+updateCounter();
+
+});
+
+
+const menuItems = document.querySelectorAll(".sidebar ul li");
+const searchInput = document.querySelector(".search input");
+
+if (searchInput && menuItems) {
+    searchInput.addEventListener("keyup", () => {
+        const value = searchInput.value.toLowerCase();
+
+        menuItems.forEach(item => {
+            const text = item.innerText.toLowerCase();
+            item.style.display = text.includes(value) ? "flex" : "none";
+        });
+
+    });
+}
+
+
+
+// window.addEventListener("load",()=>{
+
+// const welcome=document.querySelector(".welcome h1");
+
+// const hour=new Date().getHours();
+
+// if(hour<12){
+
+// welcome.innerHTML="Good Morning ☀️";
+
+// }
+
+// else if(hour<18){
+
+// welcome.innerHTML="Good Afternoon 🌤";
+
+// }
+
+// else{
+
+// welcome.innerHTML="Good Evening 🌙";
+
+// }
+
+// });
+</script>
+
+</body>
+
+<script>
+const isFileUrl = window.location.protocol === "file:";
+const dashboardApiBase = window.location.port === "5500"
+    ? `${window.location.protocol}//${window.location.hostname}:8000`
+    : "";
+
+function setDashboardProfile(user) {
+    const name = user.name || "Account holder";
+    const role = user.role === "hospital" ? "Hospital" : "Donor";
+    const nameElement = document.getElementById("topProfileName");
+    const roleElement = document.getElementById("topProfileRole");
+    const imageElement = document.getElementById("topProfileImage");
+    if (nameElement) nameElement.textContent = name;
+    if (roleElement) roleElement.textContent = role;
+    if (imageElement && user.profile_image) imageElement.src = user.profile_image;
+
+    const recentRequestsSection = document.getElementById("recentRequestsSection");
+    if (recentRequestsSection) {
+        recentRequestsSection.hidden = user.role !== "hospital";
+    }
+}
+
+if (isFileUrl) {
+    console.warn("Open this page through the PHP server to load the user profile.");
+    const recentRequestsSection = document.getElementById("recentRequestsSection");
+    if (recentRequestsSection) {
+        recentRequestsSection.hidden = true;
+    }
+} else {
+    fetch(`${dashboardApiBase}/php/profile/get-profile.php`, { credentials: "include" })
+        .then(response => response.ok ? response.json() : null)
+        .then(data => {
+            if (data?.success && data.user) setDashboardProfile(data.user);
+            else {
+                const recentRequestsSection = document.getElementById("recentRequestsSection");
+                if (recentRequestsSection) recentRequestsSection.hidden = true;
+            }
+        })
+        .catch(error => {
+            console.error("Profile loading error:", error);
+            const recentRequestsSection = document.getElementById("recentRequestsSection");
+            if (recentRequestsSection) recentRequestsSection.hidden = true;
+        });
+}
+</script>
+</html>

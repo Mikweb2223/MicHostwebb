@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" href="alert.css">
+<script src="alert.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Settings | MicHost</title>
+
+<link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet" href="settings.css">
+ 
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar" id="sidebar">
+
+<button class="close-btn" id="closeBtn">
+<i class="fas fa-times"></i>
+</button>
+
+<div class="logo">
+
+<i class="fa-solid fa-droplet"></i>
+
+<h2>MicHost</h2>
+
+</div>
+
+<ul>
+
+<li onclick="location.href='dashboard.html'">
+<i class="fa-solid fa-house"></i>
+<span>Dashboard</span>
+</li>
+
+<li onclick="location.href='inventory.html'">
+<i class="fa-solid fa-warehouse"></i>
+<span>Inventory</span>
+</li>
+
+<li onclick="location.href='donor.html'">
+<i class="fa-solid fa-users"></i>
+<span>Donors</span>
+</li>
+
+<li onclick="location.href='requests.html'">
+<i class="fa-solid fa-hand-holding-droplet"></i>
+<span>Requests</span>
+</li>
+
+<li onclick="location.href='reports.html'">
+<i class="fa-solid fa-chart-line"></i>
+<span>Reports</span>
+</li>
+
+<li onclick="location.href='profile.html'">
+<i class="fa-solid fa-user"></i>
+<span>Profile</span>
+</li>
+
+<li class="active">
+<i class="fa-solid fa-gear"></i>
+<span>Settings</span>
+</li>
+
+</ul>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<header>
+
+<!-- Mobile sidebar overlay -->
+<div id="overlay" class="overlay"></div>
+
+<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+
+<i class="fa-solid fa-bars"></i>
+</button>
+
+<h2>Settings</h2>
+
+</header>
+
+<!-- General Settings -->
+
+<div class="settings-card">
+
+<h3>General Settings</h3>
+
+<div class="setting-item">
+
+    <div>
+        <span data-i18n="notifications">Notifications</span>
+        <p data-i18n="notificationDesc">Receive MicHost notifications</p>
+    </div>
+
+    <label class="switch">
+        <input type="checkbox" id="notifications">
+        <span class="slider"></span>
+    </label>
+
+</div>
+
+<div class="setting-item">
+
+    <div>
+        <span data-i18n="emailNotifications">
+            Email Notifications
+        </span>
+
+        <p data-i18n="emailNotificationDesc">
+            Receive important updates by email
+        </p>
+    </div>
+
+    <label class="switch">
+        <input type="checkbox" id="emailNotifications">
+        <span class="slider"></span>
+    </label>
+
+</div>
+
+</div>
+
+<!-- Security -->
+
+<div class="settings-card">
+
+<h3>Security</h3>
+
+<input
+type="password"
+id="currentPassword"
+placeholder="Current Password">
+
+<input
+type="password"
+id="newPassword"
+placeholder="New Password">
+
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm Password">
+
+<button id="changePassword">
+
+Change Password
+
+</button>
+
+</div>
+
+<!-- System -->
+
+<div class="settings-card">
+
+<h3>System</h3>
+
+
+<button id="logout" onclick="location.href='logout.html'">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Logout
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const closeBtn = document.getElementById("closeBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+
+/* NOTIFICATIONS */
+
+const notifications = document.getElementById("notifications");
+const emailNotifications = document.getElementById("emailNotifications");
+
+    async function updateSetting(key, value, checkbox) {
+        try {
+            const response = await fetch('php/profile/update-settings.php', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [key]: value })
+            });
+            const data = await response.json();
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Unable to save setting');
+            }
+        } catch (err) {
+            console.error('Unable to save setting', err);
+            if (checkbox) checkbox.checked = !checkbox.checked;
+            alert(err.message || 'Unable to save setting');
+        }
+    }
+
+async function loadSettings() {
+    try {
+        const response = await fetch('php/profile/update-settings.php', {
+            credentials: 'include'
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || 'Unable to load settings');
+        }
+
+        notifications.checked = data.settings.notifications === 'enabled';
+        emailNotifications.checked = data.settings.emailNotifications === 'enabled';
+        return;
+    } catch (err) {
+        console.warn('Unable to load saved settings:', err);
+    }
+
+    // Use local values only when the backend cannot be reached.
+    notifications.checked = localStorage.getItem('notifications') === 'enabled';
+    emailNotifications.checked = localStorage.getItem('emailNotifications') === 'enabled';
+}
+
+loadSettings();
+
+notifications.addEventListener('change', function () {
+    const value = this.checked ? 'enabled' : 'disabled';
+    localStorage.setItem('notifications', value);
+    updateSetting('notifications', value, this);
+});
+
+emailNotifications.addEventListener('change', function () {
+    const value = this.checked ? 'enabled' : 'disabled';
+    localStorage.setItem('emailNotifications', value);
+    updateSetting('emailNotifications', value, this);
+});
+
+
+const changePassword = document.getElementById("changePassword");
+
+/* SAVE SETTINGS */
+
+function saveSettings() {
+
+    const userSettings = {
+
+        emailNotify: emailNotify.checked,
+
+        smsNotify: smsNotify.checked,
+
+
+    };
+
+    localStorage.setItem(
+        "settings",
+        JSON.stringify(userSettings)
+    );
+
+}
+
+
+
+/* CHANGE PASSWORD */
+
+changePassword.addEventListener("click", () => {
+
+    const current =
+    document.getElementById("currentPassword").value;
+
+    const newPassword =
+    document.getElementById("newPassword").value;
+
+    const confirm =
+    document.getElementById("confirmPassword").value;
+
+    if (
+        current === "" ||
+        newPassword === "" ||
+        confirm === ""
+    ) {
+
+        alert("Please fill in all password fields.");
+
+        return;
+
+    }
+
+    if (newPassword !== confirm) {
+
+        alert("New passwords do not match.");
+
+        return;
+
+    }
+
+    // Call backend to change password
+    fetch('php/auth/change-password.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ current_password: current, new_password: newPassword })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data && data.success) {
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            alert('Password changed successfully.');
+        } else {
+            alert(data.message || 'Unable to change password.');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Network error while changing password.');
+    });
+
+});
+
+
+</script>
+
+</body>
+
+</html>

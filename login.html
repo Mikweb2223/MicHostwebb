@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="alert.css">
+    <script src="alert.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+
+    <link rel="stylesheet" href="login.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<div class="background">
+
+    <!-- Floating Blood Cells -->
+    <span class="blood b1"></span>
+    <span class="blood b2"></span>
+    <span class="blood b3"></span>
+    <span class="blood b4"></span>
+    <span class="blood b5"></span>
+    <span class="blood b6"></span>
+
+    <div class="card">
+
+        <!-- Back Button -->
+        <div class="back-btn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </div>
+
+        <!-- Logo -->
+        <div class="logo">
+
+            <!-- SVG Logo -->
+            <svg width="70" height="70" viewBox="0 0 512 512">
+                <path fill="#D71920"
+                d="M256 32C256 32 96 208 96 320c0 88.4 71.6 160 160 160s160-71.6 160-160C416 208 256 32 256 32z"/>
+                <circle cx="256" cy="330" r="65" fill="#fff"/>
+                <path fill="#D71920"
+                d="M255 270c-34 0-61 27-61 60s27 60 61 60 61-27 61-60-27-60-61-60zm0 95a35 35 0 1 1 0-70 35 35 0 0 1 0 70z"/>
+                <circle cx="256" cy="330" r="18" fill="#D71920"/>
+            </svg>
+
+        </div>
+
+        <h1>Welcome Back To MicHost</h1>
+
+        <p>Sign in to continue your good work</p>
+
+        <!-- Switch -->
+        <div class="switch">
+
+            <button class="active">Sign In</button>
+
+            <button onclick="window.location.href='signup.html'">Sign Up</button>
+
+        </div>
+
+        <!-- Form -->
+
+        <form id="loginForm">
+
+            <label>Email Address</label>
+
+            <div class="input-box">
+
+                <i class="fa-regular fa-envelope"></i>
+
+                <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                required>
+
+            </div>
+
+            <label>Password</label>
+
+            <div class="input-box password">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                required>
+
+                <i
+                class="fa-regular fa-eye togglePassword"></i>
+
+            </div>
+
+            <div class="options">
+
+                <label class="remember">
+
+                    <input type="checkbox" checked>
+
+                    Remember me
+
+                </label>
+
+                <a href="forgot-password.html">Forgot Password?</a>
+
+            </div>
+
+            <button class="login-btn">
+
+                Login
+
+                <span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </button>
+
+        </form>
+
+        <div class="divider">
+
+            <span></span>
+
+            <p>or continue with</p>
+
+            <span></span>
+
+        </div>
+
+        <div class="google-signin-wrap">
+            <div id="google-signin" class="google-btn"></div>
+        </div>
+        <p id="login-message" role="status" aria-live="polite"></p>
+
+        <div class="signup">
+
+            Don't have an account?
+
+            <a href="signup.html">Sign Up</a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const passwordInput = document.getElementById("password");
+const togglePassword = document.querySelector(".togglePassword");
+
+if (togglePassword) {
+    togglePassword.addEventListener("click", () => {
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+        togglePassword.classList.toggle("fa-eye");
+        togglePassword.classList.toggle("fa-eye-slash");
+    });
+}
+
+const tabs = document.querySelectorAll(".switch button");
+
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        tabs.forEach(btn => btn.classList.remove("active"));
+        tab.classList.add("active");
+    });
+});
+
+const loginForm = document.getElementById("loginForm");
+const isFileUrl = window.location.protocol === "file:";
+const apiBase = window.location.port === "5500"
+    ? `${window.location.protocol}//${window.location.hostname}:8000`
+    : "";
+
+if (loginForm) {
+    loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(loginForm);
+        const email = (formData.get("email") || "").toString().trim();
+        const password = (formData.get("password") || "").toString();
+
+        if (!email || !password) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+            alert("Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.");
+            return;
+        }
+
+        try {
+            if (isFileUrl) {
+                throw new Error("Open this page through the PHP server, for example http://localhost:8000/login.html. Opening the file directly cannot access the backend.");
+            }
+
+            const response = await fetch(`${apiBase}/php/auth/login.php`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                body: new URLSearchParams({ email, password }),
+                credentials: "include"
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.requires_2fa) {
+                const code = prompt("Enter the 6-digit code from Google Authenticator:");
+                if (!code) return;
+                const verifyResponse = await fetch(`${apiBase}/php/auth/totp-verify.php`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                    body: new URLSearchParams({ code: code.trim() }),
+                    credentials: "include"
+                });
+                const verifyData = await verifyResponse.json();
+                if (!verifyData.success) {
+                    alert(verifyData.message || "Authenticator verification failed.");
+                    return;
+                }
+                if (data.user) {
+                    localStorage.setItem("profileName", data.user.name || data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || "User");
+                    localStorage.setItem("profileRole", data.user.role === "hospital" ? "Hospital" : "Donor");
+                    localStorage.setItem("profileImage", data.user.profile_image || "images/default-user.png");
+                }
+                window.location.href = "dashboard.html";
+            } else if (data.success) {
+                if (data.user) {
+                    localStorage.setItem("profileName", data.user.name || data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || "User");
+                    localStorage.setItem("profileRole", data.user.role === "hospital" ? "Hospital" : "Donor");
+                    localStorage.setItem("profileImage", data.user.profile_image || "images/default-user.png");
+                }
+                window.location.href = "dashboard.html";
+            } else {
+                alert(data.message || "Login failed. Please try again.");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("Unable to connect to the server right now. Please try again.");
+        }
+    });
+}
+
+const loginBtn = document.querySelector(".login-btn");
+
+if (loginBtn) {
+    loginBtn.addEventListener("mouseenter", () => {
+        loginBtn.style.transform = "translateY(-4px) scale(1.02)";
+    });
+
+    loginBtn.addEventListener("mouseleave", () => {
+        loginBtn.style.transform = "translateY(0) scale(1)";
+    });
+}
+
+const googleClientId = "YOUR_CLIENT_ID.apps.googleusercontent.com";
+let googleReady = false;
+
+function initGoogleLogin() {
+    const googleContainer = document.getElementById("google-signin");
+    const message = document.getElementById("login-message");
+
+    if (!googleContainer || !window.google?.accounts?.id) {
+        if (message) message.textContent = "Google Sign-In could not load. Check your connection and refresh the page.";
+        return;
+    }
+
+    if (!googleClientId || googleClientId === "YOUR_CLIENT_ID.apps.googleusercontent.com") {
+        if (message) message.textContent = "Google Sign-In is not configured yet. Add your Google OAuth client ID to login.html and set GOOGLE_CLIENT_ID on the PHP server.";
+        return;
+    }
+
+    google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: handleCredentialResponse
+    });
+
+    google.accounts.id.renderButton(googleContainer, {
+        theme: "outline",
+        size: "large",
+        width: Math.min(350, Math.floor(googleContainer.getBoundingClientRect().width)),
+        text: "continue_with"
+    });
+
+    googleReady = true;
+}
+
+const googleScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+if (googleScript) googleScript.addEventListener("load", initGoogleLogin);
+window.addEventListener("load", initGoogleLogin);
+
+const inputs = document.querySelectorAll("input");
+
+inputs.forEach(input => {
+    input.addEventListener("focus", () => {
+        if (input.parentElement) {
+            input.parentElement.style.transform = "scale(1.02)";
+        }
+    });
+
+    input.addEventListener("blur", () => {
+        if (input.parentElement) {
+            input.parentElement.style.transform = "scale(1)";
+        }
+    });
+});
+
+const backBtn = document.querySelector(".back-btn");
+if (backBtn) {
+    backBtn.addEventListener("click", () => history.back());
+}
+
+const card = document.querySelector(".card");
+if (card) {
+    document.addEventListener("mousemove", (e) => {
+        let x = (window.innerWidth / 2 - e.pageX) / 40;
+        let y = (window.innerHeight / 2 - e.pageY) / 40;
+        card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
+
+    document.addEventListener("mouseleave", () => {
+        card.style.transform = "rotateY(0deg) rotateX(0deg)";
+    });
+}
+
+function handleCredentialResponse(response) {
+    const message = document.getElementById("login-message");
+
+    if (!response || !response.credential) {
+        if (message) message.textContent = "Google did not return a sign-in credential. Please try again.";
+        return;
+    }
+
+    if (isFileUrl) {
+        if (message) message.textContent = "Open this page through the PHP server to sign in, for example http://localhost:8000/login.html.";
+        return;
+    }
+
+    if (message) message.textContent = "Signing in with Google...";
+
+    fetch(`${apiBase}/php/auth/google.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: new URLSearchParams({ credential: response.credential }),
+        credentials: "include"
+    })
+        .then(async result => {
+            const data = await result.json();
+            if (!result.ok || !data.success) {
+                throw new Error(data.message || "Google login failed.");
+            }
+
+            if (data.requires_2fa) {
+                const code = prompt("Enter the 6-digit code from your authenticator app:");
+                if (!code) {
+                    if (message) message.textContent = "Authenticator verification is required to finish signing in.";
+                    return;
+                }
+
+                const verifyResponse = await fetch(`${apiBase}/php/auth/totp-verify.php`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                    body: new URLSearchParams({ code: code.trim() }),
+                    credentials: "include"
+                });
+                const verifyData = await verifyResponse.json();
+                if (!verifyResponse.ok || !verifyData.success) {
+                    throw new Error(verifyData.message || "Authenticator verification failed.");
+                }
+            }
+
+            if (data.user) {
+                const displayName = data.user.name || data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || data.user.email || "User";
+                localStorage.setItem("profileName", displayName);
+                localStorage.setItem("profileRole", data.user.role === "hospital" ? "Hospital" : "Donor");
+                localStorage.setItem("profileImage", data.user.profile_image || "images/default-user.png");
+            }
+
+            window.location.href = "dashboard.html";
+        })
+        .catch(error => {
+            console.error("Google login error:", error);
+            if (message) message.textContent = error.message || "Unable to sign in with Google. Please try again.";
+        });
+}
+</script>
+
+</body>
+</html>

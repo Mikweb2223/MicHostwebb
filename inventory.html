@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="alert.css">
+    <script src="alert.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Inventory | BloodLink</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="inventory.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+
+<button class="close-btn" id="closeBtn">
+<i class="fas fa-times"></i>
+</button>
+
+    <div class="logo">
+        <i class="fa-solid fa-droplet"></i>
+        <h2>MicHost</h2>
+    </div>
+    <div class="menu-btn">
+    <i class="fa-solid fa-bars"></i>
+</div>
+
+
+<!-- SIDEBAR -->
+
+    <ul>
+
+        <li onclick="location.href='dashboard.html'">
+            <i class="fa-solid fa-house"></i>
+            <span>Dashboard</span>
+        </li>
+
+        <li class="active">
+            <i class="fa-solid fa-warehouse"></i>
+            <span>Blood Inventory</span>
+        </li>
+
+        <li onclick="location.href='requests.html'">
+            <i class="fa-solid fa-hand-holding-droplet"></i>
+            <span>Blood Requests</span>
+        </li>
+
+        <li onclick="location.href='donor.html'">
+            <i class="fa-solid fa-users"></i>
+            <span>Donors</span>
+        </li>
+
+        <li onclick="location.href='reports.html'">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Reports</span>
+        </li>
+
+        <li onclick="location.href='settings.html'">
+            <i class="fa-solid fa-gear"></i>
+            <span>Settings</span>
+        </li>
+
+        <li onclick="location.href='logout.html'">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+        </li>
+
+    </ul>
+
+</div>
+
+<!-- Main -->
+<div class="main">
+<header>
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="overlay">
+
+</div>
+
+<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+
+<i class="fa-solid fa-bars"></i>
+</button>
+
+<h2>Blood Inventory</h2>
+
+ <!-- NOTIFICATION -->
+        <a href="notification.html" class="notification-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span></span>
+        </a>
+
+
+        <!-- PROFILE -->
+        <a href="profile.html" class="header-profile">
+
+            <div class="header-profile-image">
+                <img
+                    id="headerProfileImage"
+                    src="images/default-user.png"
+                    alt="Profile"
+                >
+            </div>
+
+            <div class="header-profile-info">
+                <strong id="headerProfileName">
+                    Michael Adeleke
+                </strong>
+
+                <span id="headerProfileRole">
+                    Individual
+                </span>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </a>
+
+</header>
+<!-- Summary Cards -->
+<section class="inventory-cards">
+<div class="inventory-card red">
+<h3>A+</h3>
+<h1>120 Units</h1>
+</div>
+<div class="inventory-card blue">
+<h3>B+</h3>
+<h1>90 Units</h1>
+</div>
+<div class="inventory-card green">
+<h3>O+</h3>
+<h1>160 Units</h1>
+</div>
+<div class="inventory-card purple">
+<h3>AB+</h3>
+<h1>55 Units</h1>
+</div>
+</section>
+<!-- Search -->
+<div class="inventory-tools">
+<input
+type="text"
+id="searchInput"
+placeholder="Search Blood Group...">
+
+<button type="button" class="add-blood-btn" id="addBloodBtn" hidden>
+    <i class="fa-solid fa-plus"></i>
+    Add Blood
+</button>
+
+</div>
+<!-- ADD BLOOD PANEL -->
+<div class="add-blood-panel" id="addBloodPanel">
+
+    <div class="add-blood-header">
+        <div>
+            <h2>Add Blood</h2>
+            <p>Add blood units to your inventory</p>
+        </div>
+
+        <button type="button" class="close-blood" id="closeBloodBtn">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <form id="addBloodForm">
+
+        <div class="blood-input">
+            <label for="bloodGroup">Blood Group</label>
+
+            <select id="bloodGroup" name="blood_group" required>
+                <option value="">Select blood group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+        </div>
+
+        <div class="blood-input">
+            <label for="bloodUnits">Number of Units</label>
+
+            <input
+                type="number"
+                id="bloodUnits"
+                name="units"
+                min="1"
+                placeholder="Enter number of units"
+                required
+            >
+        </div>
+
+        <div class="blood-actions">
+
+            <button
+                type="button"
+                class="cancel-blood"
+                id="cancelBloodBtn"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="submit"
+                class="save-blood"
+            >
+                <i class="fa-solid fa-plus"></i>
+                Add Blood
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- Inventory Table -->
+<div class="inventory-table">
+<table>
+<thead>
+<tr>
+<th>Blood Group</th>
+<th>Available Units</th>
+<th>Status</th>
+<th>Last Updated</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="inventoryBody">
+<tr>
+<td>A+</td>
+<td>120</td>
+<td><span class="available">Available</span></td>
+<td>Today</td>
+<td>
+<button class="edit">
+<i class="fa-solid fa-pen"></i>
+</button>
+<button class="delete">
+<i class="fa-solid fa-trash"></i>
+</button>
+</td>
+</tr>
+<tr>
+<td>O+</td>
+<td>160</td>
+<td><span class="available">Available</span></td>
+<td>Today</td>
+<td>
+<button class="edit">
+<i class="fa-solid fa-pen"></i>
+</button>
+<button class="delete">
+<i class="fa-solid fa-trash"></i>
+</button>
+</td>
+</tr>
+<tr>
+<td>AB-</td>
+<td>8</td>
+<td><span class="low">Low Stock</span></td>
+<td>Yesterday</td>
+<td>
+<button class="edit">
+<i class="fa-solid fa-pen"></i>
+</button>
+<button class="delete">
+<i class="fa-solid fa-trash"></i>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<script>
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const closeBtn = document.getElementById("closeBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+const inventoryBody = document.getElementById("inventoryBody");
+const searchInput = document.getElementById("searchInput");
+/* Default Data */
+let inventory = JSON.parse(localStorage.getItem("bloodInventory")) || [
+{
+group:"A+",
+units:120,
+status:"Available",
+date:"Today"
+},
+
+{
+group:"B+",
+units:90,
+status:"Available",
+date:"Today"
+},
+
+{
+group:"O+",
+units:160,
+status:"Available",
+date:"Today"
+},
+
+{
+group:"AB-",
+units:8,
+status:"Low Stock",
+date:"Yesterday"
+}
+
+];
+
+// profile and notification btn //
+document.addEventListener("DOMContentLoaded", async () => {
+    const currentName = localStorage.getItem("profileName") || "User";
+    const currentRole = localStorage.getItem("profileRole") || "Donor";
+    const currentImage = localStorage.getItem("profileImage") || "images/default-user.png";
+
+    const name = document.getElementById("headerProfileName");
+    const role = document.getElementById("headerProfileRole");
+    const image = document.getElementById("headerProfileImage");
+    const addBloodButton = document.getElementById("addBloodBtn");
+
+    if (name) name.textContent = currentName;
+    if (role) role.textContent = currentRole;
+    if (image) image.src = currentImage;
+
+    if (window.location.protocol === "file:") return;
+
+    try {
+        const endpoint = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""}/php/profile/get-profile.php`;
+        const response = await fetch(endpoint, { credentials: "include" });
+        const data = response.ok ? await response.json() : null;
+
+        if (data?.success && data.user) {
+            const fetchedName = data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || data.user.email || "User";
+            const fetchedRole = data.user.role === "hospital" ? "Hospital" : "Donor";
+            const fetchedImage = data.user.profile_image || "images/default-user.png";
+
+            localStorage.setItem("profileName", fetchedName);
+            localStorage.setItem("profileRole", fetchedRole);
+            localStorage.setItem("profileImage", fetchedImage);
+
+            if (name) name.textContent = fetchedName;
+            if (role) role.textContent = fetchedRole;
+            if (image) image.src = fetchedImage;
+            if (addBloodButton) {
+                addBloodButton.hidden = !(data.user.role === "hospital" && data.user.verification_status === "verified");
+            }
+        }
+    } catch (error) {
+        console.warn("Profile refresh failed:", error);
+    }
+});
+
+const addBloodBtn = document.getElementById("addBloodBtn");
+const addBloodPanel = document.getElementById("addBloodPanel");
+const closeBloodBtn = document.getElementById("closeBloodBtn");
+const cancelBloodBtn = document.getElementById("cancelBloodBtn");
+const addBloodForm = document.getElementById("addBloodForm");
+const isFileUrl = window.location.protocol === "file:";
+const apiBase = window.location.port === "5500"
+    ? `${window.location.protocol}//${window.location.hostname}:8000`
+    : "";
+
+// Open panel
+addBloodBtn?.addEventListener("click", () => {
+    addBloodPanel.classList.add("active");
+});
+
+// Close panel
+closeBloodBtn.addEventListener("click", () => {
+    addBloodPanel.classList.remove("active");
+});
+
+// Cancel
+cancelBloodBtn.addEventListener("click", () => {
+    addBloodPanel.classList.remove("active");
+    addBloodForm.reset();
+});
+
+// Submit
+
+if (addBloodForm) {
+
+    addBloodForm.addEventListener(
+        "submit",
+        async function (e) {
+
+            e.preventDefault();
+
+            const formData = new FormData(addBloodForm);
+
+            // read values now for local update
+            const group = formData.get("blood_group");
+            const unitsToAdd = Number(formData.get("units")) || 0;
+
+            try {
+                if (isFileUrl) {
+                    throw new Error("Open this page through the PHP server, for example http://localhost:8000/inventory.html. Opening the file directly cannot access the backend.");
+                }
+
+                const response = await fetch(`${apiBase}/php/inventory/add-blood.php`, {
+                    method: "POST",
+                    body: formData,
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+
+                if (!response.ok && !data.message) {
+                    throw new Error(`Server returned HTTP ${response.status}.`);
+                }
+
+                if (data.success) {
+
+                    // Update local inventory immediately so table reflects change
+                    const idx = inventory.findIndex(b => b.group === group);
+                    if (idx > -1) {
+                        inventory[idx].units = Number(inventory[idx].units) + unitsToAdd;
+                        if (inventory[idx].units === 0) inventory[idx].status = 'Out of Stock';
+                        else if (inventory[idx].units < 20) inventory[idx].status = 'Low Stock';
+                        else inventory[idx].status = 'Available';
+                        inventory[idx].date = 'Today';
+                    } else {
+                        const status = unitsToAdd === 0 ? 'Out of Stock' : unitsToAdd < 20 ? 'Low Stock' : 'Available';
+                        inventory.push({ group, units: unitsToAdd, status, date: 'Today' });
+                    }
+
+                    renderInventory();
+                    updateCards();
+
+                    addBloodForm.reset();
+
+                    // Close your add-blood panel
+                    document.querySelector('.add-blood-panel')?.classList.remove('active');
+
+                    // Also refresh server-backed inventory (chart/data) in background
+                    loadInventory();
+
+                } else {
+                    console.error(data.message);
+                    alert(data.message || 'Unable to add blood');
+                }
+
+            } catch (error) {
+                console.error('Inventory error:', error);
+                    alert(error.message || 'Network error: unable to add blood');
+            }
+        }
+    );
+}
+
+    
+
+
+async function loadInventory() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${apiBase}/php/inventory/get-inventory.php`,
+                {
+                    credentials: "include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+            return;
+        }
+
+        const bloodGroups = [
+            "A+",
+            "A-",
+            "B+",
+            "B-",
+            "AB+",
+            "AB-",
+            "O+",
+            "O-"
+        ];
+
+        const values =
+            bloodGroups.map(group => {
+
+                const item =
+                    data.inventory.find(
+                        blood =>
+                            blood.blood_group === group
+                    );
+
+                return item
+                    ? Number(item.units)
+                    : 0;
+            });
+
+        updateBloodChart(
+            bloodGroups,
+            values
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load inventory:",
+            error
+        );
+
+    }
+}
+
+
+
+function updateBloodChart(labels, values) {
+
+    bloodChart.data.labels = labels;
+
+    bloodChart.data.datasets[0].data =
+        values;
+
+    bloodChart.update();
+}
+
+
+function renderInventory(){
+inventoryBody.innerHTML="";
+inventory.forEach((blood,index)=>{
+let badge="available";
+if(blood.status==="Low Stock") badge="low";
+if(blood.status==="Out of Stock") badge="out";
+inventoryBody.innerHTML+=`
+<tr>
+<td>${blood.group}</td>
+<td>${blood.units}</td>
+<td>
+<span class="${badge}">
+${blood.status}
+</span>
+</td>
+
+<td>${blood.date}</td>
+
+<td>
+
+<button class="edit"
+onclick="editBlood(${index})">
+<i class="fa-solid fa-pen"></i>
+</button>
+
+<button class="delete"
+onclick="deleteBlood(${index})">
+<i class="fa-solid fa-trash"></i>
+</button>
+</td>
+</tr>
+
+`;
+
+});
+
+localStorage.setItem(
+"bloodInventory",
+JSON.stringify(inventory)
+);
+}
+renderInventory();
+
+searchInput.addEventListener("keyup",()=>{
+const keyword = searchInput.value.toLowerCase();
+const rows = inventoryBody.querySelectorAll("tr");
+rows.forEach(row=>{
+const group=row.children[0].innerText.toLowerCase();
+row.style.display=
+group.includes(keyword)
+? ""
+: "none";
+
+});
+
+});
+
+
+
+function deleteBlood(index){
+if(confirm("Delete this blood record?")){
+inventory.splice(index,1);
+renderInventory();
+
+}
+
+}
+
+function editBlood(index){
+const newUnits=parseInt(
+prompt(
+"Enter new units",
+inventory[index].units
+)
+
+);
+
+if(isNaN(newUnits)) return;
+inventory[index].units=newUnits;
+if(newUnits===0){
+inventory[index].status="Out of Stock";
+}
+
+else if(newUnits<20){
+inventory[index].status="Low Stock";
+
+}
+
+else{
+inventory[index].status="Available";
+}
+
+inventory[index].date="Today";
+renderInventory();
+
+}
+
+function updateCards(){
+const cards=document.querySelectorAll(".inventory-card h1");
+if(cards.length<4) return;
+cards[0].innerText=
+inventory.find(x=>x.group==="A+")?.units || 0;
+cards[1].innerText=
+inventory.find(x=>x.group==="B+")?.units || 0;
+cards[2].innerText=
+inventory.find(x=>x.group==="O+")?.units || 0;
+cards[3].innerText=
+inventory.find(x=>x.group==="AB+")?.units || 0;
+
+}
+
+setInterval(updateCards,500);
+
+updateCards();
+</script>
+
+</body>
+</html>

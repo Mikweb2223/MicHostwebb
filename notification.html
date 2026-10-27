@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="alert.css">
+<script src="alert.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BloodLink | Notifications</title>
+
+<link rel="stylesheet" href="notification.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+ 
+
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+
+<div class="logo">
+<i class="fas fa-droplet"></i>
+<h2>MicHost</h2>
+</div>
+
+<ul>
+
+<li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+
+<li id="nearbyHospitalsNav"><a href="hospitals.html"><i class="fas fa-hospital"></i> Nearby Hospitals</a></li>
+
+<li id="appointmentsNav"><a href="appointments.html"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+
+<li id="donationHistoryNav"><a href="donation-history.html"><i class="fas fa-heart"></i> Donation History</a></li>
+
+<li class="active">
+<a href="#">
+<i class="fas fa-bell"></i>
+Notifications
+<span class="badge">5</span>
+</a>
+</li>
+
+<li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+
+<li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+
+<li><a href="logout.html"><i class="fas fa-right-from-bracket"></i> Logout</a></li>
+
+</ul>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<header>
+
+<div>
+
+<h1>Notifications</h1>
+
+<p>Stay updated with BloodLink activities</p>
+
+</div>
+
+<div class="menu-btn" id="menuBtn">
+
+<i class="fas fa-bars"></i>
+
+</div>
+
+</header>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchNotification"
+placeholder="Search notifications...">
+
+<i class="fas fa-search"></i>
+
+</div>
+
+<div class="notification-actions">
+
+<button id="markAll">
+
+<i class="fas fa-check-double"></i>
+
+Mark All Read
+
+</button>
+
+<button id="clearAll">
+
+<i class="fas fa-trash"></i>
+
+Clear All
+
+</button>
+
+</div>
+
+<div id="notificationList" class="notification-list">
+
+</div>
+
+</div>
+
+ 
+<script>
+let notifications = [];
+const container = document.getElementById('notificationList');
+const badge = document.querySelector('.badge');
+
+function renderTime(ts) {
+    try {
+        const d = new Date(ts);
+        return d.toLocaleString();
+    } catch (e) {
+        return ts;
+    }
+}
+
+function render(list) {
+    container.innerHTML = '';
+    list.forEach(item => {
+        const readClass = item.is_read == 1 ? 'read' : '';
+        container.innerHTML += `
+            <div class="notification ${readClass}" data-id="${item.id}">
+                <div class="notification-content">
+                    <h3>${item.title}</h3>
+                    <p>${item.message}</p>
+                    <small>${renderTime(item.created_at)}</small>
+                </div>
+                <div class="notification-actions">
+                    ${item.is_read == 0 ? `<button class="mark-btn" data-id="${item.id}"><i class="fas fa-check"></i></button>` : ''}
+                    <button class="del-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        `;
+    });
+    if (badge) badge.textContent = notifications.length;
+}
+
+async function loadNotifications() {
+    try {
+        const _res = await fetch('php/notifications/list.php', { credentials: 'include' });
+        const data = await _res.json();
+        if (data && data.success) {
+            notifications = data.notifications || [];
+            render(notifications);
+        } else {
+            container.innerHTML = '<p>Unable to load notifications.</p>';
+        }
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = '<p>Network error.</p>';
+        alert('Unable to load notifications');
+    }
+}
+
+document.getElementById('searchNotification').addEventListener('keyup', function () {
+    const v = this.value.toLowerCase();
+    const filtered = notifications.filter(i => (i.title || '').toLowerCase().includes(v) || (i.message || '').toLowerCase().includes(v));
+    render(filtered);
+});
+
+// Delegate click actions
+container.addEventListener('click', async (e) => {
+    const markBtn = e.target.closest('.mark-btn');
+    const delBtn = e.target.closest('.del-btn');
+    if (markBtn) {
+        const id = markBtn.getAttribute('data-id');
+            try {
+            await fetch('php/notifications/mark.php', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}` });
+            alert('Marked read');
+        } catch (err) { alert('Unable to mark notification'); }
+        await loadNotifications();
+    } else if (delBtn) {
+        const id = delBtn.getAttribute('data-id');
+        if (!confirm('Delete this notification?')) return;
+        try {
+            await fetch('php/notifications/delete.php', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}` });
+            alert('Deleted');
+        } catch (err) { alert('Unable to delete'); }
+        await loadNotifications();
+    }
+});
+
+document.getElementById('clearAll').addEventListener('click', async () => {
+    if (!confirm('Delete all notifications?')) return;
+    try {
+        await fetch('php/notifications/clear.php', { method: 'POST', credentials: 'include' });
+        alert('All notifications cleared');
+    } catch (err) { alert('Unable to clear notifications'); }
+    await loadNotifications();
+});
+
+document.getElementById('markAll').addEventListener('click', async () => {
+    const unread = notifications.filter(n => n.is_read == 0).map(n => n.id);
+    for (const id of unread) {
+        try {
+            await fetch('php/notifications/mark.php', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}` });
+        } catch (err) { /* continue */ }
+    }
+    alert('Marked all read');
+    await loadNotifications();
+});
+
+// Sidebar toggle (existing behavior)
+const sidebar = document.getElementById('sidebar');
+const menu = document.getElementById('menuBtn');
+menu.onclick = () => {
+    sidebar.classList.toggle('active');
+    menu.innerHTML = sidebar.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+};
+
+// Initial load
+const nearbyHospitalsNav = document.getElementById('nearbyHospitalsNav');
+const appointmentsNav = document.getElementById('appointmentsNav');
+const donationHistoryNav = document.getElementById('donationHistoryNav');
+
+async function applyHospitalNavPermissions() {
+    try {
+        const endpoint = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/php/profile/get-profile.php`;
+        const response = await fetch(endpoint, { credentials: 'include' });
+        const data = response.ok ? await response.json() : null;
+        const role = data?.user?.role || localStorage.getItem('profileRole') || 'donor';
+        const isHospital = role === 'hospital';
+
+        if (isHospital) {
+            if (nearbyHospitalsNav) nearbyHospitalsNav.hidden = true;
+            if (appointmentsNav) appointmentsNav.hidden = true;
+            if (donationHistoryNav) donationHistoryNav.hidden = true;
+        }
+    } catch (error) {
+        console.warn('Hospital nav check failed:', error);
+    }
+}
+
+applyHospitalNavPermissions();
+loadNotifications();
+</script>
+
+</body>
+</html>

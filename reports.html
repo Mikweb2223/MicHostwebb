@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reports | BloodLink</title>
+
+<link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet" href="reports.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ 
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar" id="sidebar">
+
+<button class="close-btn" id="closeBtn">
+<i class="fas fa-times"></i>
+</button>
+
+<div class="logo">
+
+<i class="fa-solid fa-droplet"></i>
+
+<h2>MicHost</h2>
+
+</div>
+
+<ul>
+
+<li onclick="location.href='dashboard.html'">
+<i class="fa-solid fa-house"></i>
+<span>Dashboard</span>
+</li>
+
+<li onclick="location.href='inventory.html'">
+<i class="fa-solid fa-warehouse"></i>
+<span>Inventory</span>
+</li>
+
+<li onclick="location.href='donor.html'">
+<i class="fa-solid fa-users"></i>
+<span>Donors</span>
+</li>
+
+<li onclick="location.href='requests.html'">
+<i class="fa-solid fa-hand-holding-droplet"></i>
+<span>Requests</span>
+</li>
+
+<li class="active">
+<i class="fa-solid fa-chart-line"></i>
+<span>Reports</span>
+</li>
+
+<li onclick="location.href='profile.html'">
+<i class="fa-solid fa-user"></i>
+<span>Profile</span>
+</li>
+
+<li onclick="location.href='settings.html'">
+<i class="fa-solid fa-gear"></i>
+<span>Settings</span>
+</li>
+
+<li onclick="location.href='logout.html'">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span>Logout</span>
+</li>
+
+</ul>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<header>
+
+
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="overlay">
+
+</div>
+
+<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+
+<i class="fa-solid fa-bars"></i>
+</button>
+
+
+<h2>Reports & Analytics</h2>
+
+ <!-- NOTIFICATION -->
+     <a href="notification.html" class="notification-btn">
+        <i class="fa-regular fa-bell"></i>
+        <span></span>
+    </a>
+
+
+        <!-- PROFILE -->
+        <a href="profile.html" class="header-profile">
+
+            <div class="header-profile-image">
+                <img
+                    id="headerProfileImage"
+                    src="images/default-user.png"
+                    alt="Profile"
+                >
+            </div>
+
+            <div class="header-profile-info">
+                <strong id="headerProfileName">
+                    Michael Adeleke
+                </strong>
+
+                <span id="headerProfileRole">
+                    Individual
+                </span>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </a>
+
+</header>
+
+<!-- REPORT CARDS -->
+
+<section class="report-cards">
+
+<div class="report-card">
+
+<i class="fa-solid fa-droplet"></i>
+
+<h2>920</h2>
+
+<p>Total Blood Units</p>
+
+</div>
+
+<div class="report-card">
+
+<i class="fa-solid fa-users"></i>
+
+<h2>358</h2>
+
+<p>Total Donors</p>
+
+</div>
+
+<div class="report-card">
+
+<i class="fa-solid fa-hand-holding-droplet"></i>
+
+<h2>182</h2>
+
+<p>Blood Requests</p>
+
+</div>
+
+<div class="report-card">
+
+<i class="fa-solid fa-calendar-check"></i>
+
+<h2>126</h2>
+
+<p>Appointments</p>
+
+</div>
+
+</section>
+
+<!-- CHARTS -->
+
+<div class="charts">
+
+<div class="chart-box">
+
+<h3>Monthly Donations</h3>
+
+<canvas id="donationChart"></canvas>
+
+</div>
+
+<div class="chart-box">
+
+<h3>Blood Group Distribution</h3>
+
+<canvas id="bloodChart"></canvas>
+
+</div>
+
+</div>
+
+<!-- ACTION BUTTONS -->
+
+<div class="report-buttons">
+
+<button id="printReport">
+
+<i class="fa-solid fa-print"></i>
+
+Print
+
+</button>
+
+<button id="downloadPdf">
+
+<i class="fa-solid fa-file-pdf"></i>
+
+Export PDF
+
+</button>
+
+<button id="downloadExcel">
+
+<i class="fa-solid fa-file-excel"></i>
+
+Export Excel
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const closeBtn = document.getElementById("closeBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+/* profile and notification */
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const currentName = localStorage.getItem("profileName") || "User";
+    const currentRole = localStorage.getItem("profileRole") || "Donor";
+    const currentImage = localStorage.getItem("profileImage") || "images/default-user.png";
+
+    const name = document.getElementById("headerProfileName");
+    const role = document.getElementById("headerProfileRole");
+    const image = document.getElementById("headerProfileImage");
+
+    if (name) name.textContent = currentName;
+    if (role) role.textContent = currentRole;
+    if (image) image.src = currentImage;
+
+    if (window.location.protocol === "file:") return;
+
+    try {
+        const endpoint = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""}/php/profile/get-profile.php`;
+        const response = await fetch(endpoint, { credentials: "include" });
+        const data = response.ok ? await response.json() : null;
+
+        if (data?.success && data.user) {
+            const fetchedName = data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || data.user.email || "User";
+            const fetchedRole = data.user.role === "hospital" ? "Hospital" : "Donor";
+            const fetchedImage = data.user.profile_image || "images/default-user.png";
+
+            localStorage.setItem("profileName", fetchedName);
+            localStorage.setItem("profileRole", fetchedRole);
+            localStorage.setItem("profileImage", fetchedImage);
+
+            if (name) name.textContent = fetchedName;
+            if (role) role.textContent = fetchedRole;
+            if (image) image.src = fetchedImage;
+        }
+    } catch (error) {
+        console.warn("Profile refresh failed:", error);
+    }
+});
+
+/* BLOOD LINK REPORTS */
+
+// Dashboard data (prefer backend)
+let donorsCount = 0;
+let inventory = [];
+let requests = [];
+const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+async function loadReportData() {
+    try {
+        const _res = await fetch('php/reports/data.php', { credentials: 'include' });
+        const data = await _res.json();
+        if (data && data.success) {
+            donorsCount = Number(data.donors || 0);
+            inventory = data.inventory || [];
+            requests = data.requests || [];
+        }
+    } catch (err) {
+        console.error('Unable to load reports data', err);
+        // don't alert repeatedly during init
+    }
+}
+
+/* UPDATE REPORT CARDS */
+
+function updateCards(){
+    const cards = document.querySelectorAll('.report-card h2');
+    if (cards.length < 4) return;
+
+    const totalUnits = inventory.reduce((sum,item)=> sum + (Number(item.units) || 0), 0);
+    cards[0].innerText = totalUnits;
+    cards[1].innerText = donorsCount;
+
+    // requests may be aggregated by status
+    const reqCount = Array.isArray(requests) ? requests.reduce((s,r)=> s + (Number(r.count) || 0), 0) : 0;
+    cards[2].innerText = reqCount;
+
+    cards[3].innerText = appointments.length;
+}
+
+async function initReports(){
+    await loadReportData();
+    updateCards();
+
+    /* MONTHLY DONATION CHART */
+    const donationCtx = document.getElementById("donationChart");
+    if (donationCtx){
+        new Chart(donationCtx,{
+            type:"line",
+            data:{
+                labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+                datasets:[{
+                    label:"Blood Donations",
+                    data:[35,42,50,40,58,67,61,74,68,80,89,96],
+                    borderColor:"#E53935",
+                    backgroundColor:"rgba(229,57,53,.15)",
+                    fill:true,
+                    tension:.4
+                }]
+            },
+            options:{ responsive:true, maintainAspectRatio:false }
+        });
+    }
+
+    /* BLOOD GROUP CHART */
+    const bloodCtx = document.getElementById('bloodChart');
+    if (bloodCtx) {
+        const labels = ['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+        const colorMap = ['#E53935','#EF5350','#FB8C00','#FFA726','#43A047','#66BB6A','#1976D2','#64B5F6'];
+        function buildBloodData() {
+            const map = Object.fromEntries(labels.map(l => [l, 0]));
+            inventory.forEach(row => {
+                const g = row.blood_group || row.bloodGroup || '';
+                if (g in map) map[g] = Number(row.units) || 0;
+            });
+            return labels.map(l => map[l]);
+        }
+
+        const bloodChart = new Chart(bloodCtx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{ data: buildBloodData(), backgroundColor: colorMap }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // If there's no inventory data, show a small overlay message
+        const totals = buildBloodData().reduce((s,v) => s + (Number(v)||0), 0);
+        const chartBox = bloodCtx.closest('.chart-box');
+        if (chartBox) {
+            const existing = chartBox.querySelector('.chart-no-data');
+            if (totals === 0) {
+                if (!existing) {
+                    const p = document.createElement('p');
+                    p.className = 'chart-no-data';
+                    p.innerText = 'No inventory data to display';
+                    chartBox.appendChild(p);
+                    bloodCtx.style.opacity = '0.35';
+                }
+            } else {
+                if (existing) existing.remove();
+                bloodCtx.style.opacity = '';
+            }
+        }
+    }
+}
+
+// initialize reports
+initReports().catch(err => console.error('Reports init failed', err));
+
+/* PRINT REPORT */
+
+const printBtn =
+document.getElementById("printReport");
+
+if(printBtn){
+
+printBtn.addEventListener("click",()=>{
+
+window.print();
+
+});
+
+}
+
+/* EXPORT PDF */
+
+const pdfBtn =
+document.getElementById("downloadPdf");
+
+if(pdfBtn){
+
+    pdfBtn.addEventListener("click",()=>{
+
+        const { jsPDF } = window.jspdf;
+
+        const doc = new jsPDF();
+
+        doc.setFontSize(20);
+        doc.text("BloodLink Report", 20, 20);
+
+        doc.setFontSize(12);
+
+        const totalUnits = inventory.reduce((s,i)=> s + (Number(i.units)||0), 0);
+
+        doc.text(`Blood Units: ${totalUnits}`, 20, 40);
+        doc.text(`Donors: ${donorsCount}`, 20, 50);
+        doc.text(`Requests: ${requests.length}`, 20, 60);
+        doc.text(`Appointments: ${appointments.length}`, 20, 70);
+
+
+        doc.save("BloodLink_Report.pdf");
+
+    });
+
+}
+
+/* EXPORT EXCEL */
+
+const excelBtn =
+document.getElementById("downloadExcel");
+
+if(excelBtn){
+
+excelBtn.addEventListener("click",()=>{
+
+const totalUnits = inventory.reduce((s,i)=> s + (Number(i.units)||0), 0);
+let csv = `Category,Total
+Blood Units,${totalUnits}
+Donors,${donorsCount}
+Requests,${requests.length}
+Appointments,${appointments.length}`;
+
+const blob =
+new Blob([csv],{type:"text/csv"});
+
+const url =
+URL.createObjectURL(blob);
+
+const a =
+document.createElement("a");
+
+a.href=url;
+
+a.download="BloodLink_Report.csv";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+});
+
+}
+
+/* AUTO REFRESH */
+
+window.addEventListener("storage",()=>{
+
+updateCards();
+
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="alert.css">
+<script src="alert.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nearby Hospitals | BloodLink</title>
+
+<link rel="stylesheet" href="hospitals.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+
+<header>
+
+<div class="logo">
+<i class="fa-solid fa-droplet"></i>
+<h2>MicHost</h2>
+</div>
+
+<div class="location">
+<i class="fa-solid fa-location-dot"></i>
+<span id="userLocation">Finding your location...</span>
+</div>
+
+<button class="back-btn" type="button" onclick="location.href=localStorage.getItem('profileRole') === 'Hospital' ? 'dashboard.html' : 'donor.html'">
+<i class="fa-solid fa-arrow-left"></i>
+</button>
+
+</header>
+
+<section class="hero">
+
+<h1>Nearby Registered Hospitals</h1>
+
+<p>Showing hospitals registered on BloodLink closest to you.</p>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchHospital"
+placeholder="Search hospital...">
+
+<i class="fa-solid fa-search"></i>
+
+</div>
+
+</section>
+
+<div id="hospitalContainer" class="hospital-grid">
+
+</div>
+
+<script>
+    // Sample registered hospitals
+// Later this will come from PHP/MySQL
+
+const hospitals=[
+
+{
+
+id:1,
+
+name:"City General Hospital",
+
+distance:1.4,
+
+blood:"A+, O-",
+
+address:"Ado-Ekiti",
+
+status:"Open"
+
+},
+
+{
+
+id:2,
+
+name:"Federal Teaching Hospital",
+
+distance:3.2,
+
+blood:"O+, B+",
+
+address:"Iworoko Road",
+
+status:"Open"
+
+},
+
+{
+
+id:3,
+
+name:"Mercy Medical Centre",
+
+distance:5.8,
+
+blood:"AB+, A-",
+
+address:"Basiri",
+
+status:"Open"
+
+},
+
+{
+
+id:4,
+
+name:"Life Care Hospital",
+
+distance:8.3,
+
+blood:"O-, A+",
+
+address:"Ajilosun",
+
+status:"Open"
+
+}
+
+];
+
+
+
+const container=document.getElementById("hospitalContainer");
+
+function displayHospitals(list){
+
+container.innerHTML="";
+
+list.forEach(hospital=>{
+
+container.innerHTML+=`
+
+<div class="hospital">
+
+<h2>${hospital.name}</h2>
+
+<span class="status">${hospital.status}</span>
+
+<p class="need">
+
+🩸 Needs: ${hospital.blood}
+
+</p>
+
+<p class="info">
+
+📍 ${hospital.address}
+
+</p>
+
+<p class="info">
+
+📏 ${hospital.distance} km away
+
+</p>
+
+<button onclick="book(${hospital.id})">
+
+Book Appointment
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+displayHospitals(hospitals);
+
+// Search
+
+document.getElementById("searchHospital")
+
+.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+const filtered=hospitals.filter(h=>
+
+h.name.toLowerCase().includes(value)
+
+);
+
+displayHospitals(filtered);
+
+});
+
+// GPS
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition((position)=>{
+
+document.getElementById("userLocation").innerHTML=
+
+`Latitude ${position.coords.latitude.toFixed(2)}, Longitude ${position.coords.longitude.toFixed(2)}`;
+
+});
+
+}
+
+// Book Appointment
+
+function book(id){
+
+const hospital=hospitals.find(h=>h.id===id);
+
+alert(
+
+`Appointment request sent to ${hospital.name}`
+
+);
+
+}
+</script>
+
+</body>
+</html>

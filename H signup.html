@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" href="alert.css">
+<script src="alert.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hospital Registration</title>
+
+<link rel="stylesheet" href="H signup.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+</head>
+
+<body>
+
+<div class="background">
+
+    <img src="image/blood-cell.png" class="blood blood1">
+    <img src="image/blood-cell.png" class="blood blood2">
+    <img src="image/blood-cell.png" class="blood blood3">
+    <img src="image/blood-cell.png" class="blood blood4">
+
+    <div class="login-card">
+
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="logo">
+            <img src="image/blood-cell.png" alt="Blood Donation">
+        </div>
+
+        <h1>Create Hospital Account</h1>
+
+        <p>
+            Register your hospital to manage blood donations.
+        </p>
+
+        <div class="tabs">
+
+            <button class="tab"
+            onclick="window.location.href='hospital.html'">
+
+                Hospital Login
+
+            </button>
+
+            <button class="tab active">
+
+                Register
+
+            </button>
+
+        </div>
+
+        <form id="signupForm" action="php/auth/register.php" method="post" enctype="multipart/form-data">
+
+            <label>Hospital Name</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-hospital"></i>
+
+                <input
+                type="text"
+                name="hospital_name"
+                placeholder="General Hospital"
+                required>
+
+            </div>
+
+            <label>Hospital Email</label>
+
+            <div class="input-box">
+
+                <i class="fa-regular fa-envelope"></i>
+
+                <input
+                type="email"
+                name="email"
+                placeholder="hospital@email.com"
+                required>
+
+            </div>
+
+            <label>Phone Number</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-phone"></i>
+
+                <input
+                type="tel"
+                name="phone"
+                placeholder="+234 xxx xxx xxxx"
+                required>
+
+            </div>
+
+            <label>Hospital Address</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <input
+                type="text"
+                name="address"
+                placeholder="Enter hospital address"
+                required>
+
+            </div>
+
+            <label>Hospital License Number</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-id-card"></i>
+
+                <input
+                type="text"
+                name="license_number"
+                placeholder="License Number"
+                required>
+
+            </div>
+
+            <label>Create Password</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                id="signupPassword"
+                name="password"
+                type="password"
+                placeholder="Create Password"
+                required>
+
+                <i class="fa-regular fa-eye toggleSignup"></i>
+
+            </div>
+
+            <label>Confirm Password</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                id="confirmPassword"
+                name="confirm_password"
+                type="password"
+                placeholder="Confirm Password"
+                required>
+
+                <i class="fa-regular fa-eye toggleConfirm"></i>
+
+            </div>
+
+            <label>Upload Hospital Logo</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-image"></i>
+
+                <input type="file" name="profile_image" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+
+            </div>
+
+            <label class="terms-consent">
+                <input type="checkbox" name="agree" required>
+                <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms & Conditions</a> and <a href="terms.html#privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+            </label>
+
+            <button class="login-btn">
+
+                Register Hospital
+
+                <span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </button>
+
+        </form>
+
+        <div class="bottom-text">
+
+            Already have an account?
+
+            <a href="hospital.html">
+
+                Login
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+    
+    <script>
+
+const signupPassword = document.getElementById("signupPassword");
+const confirmPassword = document.getElementById("confirmPassword");
+
+const toggleSignup = document.querySelector(".toggleSignup");
+const toggleConfirm = document.querySelector(".toggleConfirm");
+
+if(toggleSignup){
+
+toggleSignup.addEventListener("click",()=>{
+
+const type =
+signupPassword.type==="password"
+? "text"
+: "password";
+
+signupPassword.type=type;
+
+toggleSignup.classList.toggle("fa-eye");
+toggleSignup.classList.toggle("fa-eye-slash");
+
+});
+
+}
+
+if(toggleConfirm){
+
+toggleConfirm.addEventListener("click",()=>{
+
+const type =
+confirmPassword.type==="password"
+? "text"
+: "password";
+
+confirmPassword.type=type;
+
+toggleConfirm.classList.toggle("fa-eye");
+toggleConfirm.classList.toggle("fa-eye-slash");
+
+});
+
+}
+
+const signupForm=document.getElementById("signupForm");
+const isFileUrl = window.location.protocol === "file:";
+const maxImageSize = 5 * 1024 * 1024;
+const apiBase = window.location.port === "5500"
+    ? `${window.location.protocol}//${window.location.hostname}:8000`
+    : "";
+
+if(signupForm){
+
+signupForm.addEventListener("submit", async (e)=>{
+
+e.preventDefault();
+
+const formData = new FormData(signupForm);
+const hospitalName = (formData.get("hospital_name") || "").toString().trim();
+const email = (formData.get("email") || "").toString().trim();
+const phone = (formData.get("phone") || "").toString().trim();
+const password = (formData.get("password") || "").toString();
+const confirm = (formData.get("confirm_password") || "").toString();
+const agreed = formData.get("agree") !== null;
+const image = formData.get("profile_image");
+
+if(hospitalName===""){
+    alert("Hospital name is required.");
+    return;
+}
+
+if(email===""){
+    alert("Hospital email is required.");
+    return;
+}
+
+if(phone===""){
+    alert("Phone number is required.");
+    return;
+}
+
+if(password.length<8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)){
+    alert("Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.");
+    return;
+}
+
+if(password!==confirm){
+    alert("Passwords do not match.");
+    return;
+}
+
+if(!agreed){
+    alert("Please accept the Terms & Conditions.");
+    return;
+}
+
+if (image && image.size > 0) {
+    if (!['image/jpeg', 'image/png'].includes(image.type)) {
+        alert("Hospital logo must be a JPG or PNG file.");
+        return;
+    }
+    if (image.size > maxImageSize) {
+        alert("Hospital logo must be 5 MB or smaller.");
+        return;
+    }
+}
+
+const btn=document.querySelector(".login-btn");
+btn.disabled = true;
+try {
+    if (isFileUrl) {
+        throw new Error('Open this page through the PHP server, for example http://localhost:8000/H%20signup.html. Opening the HTML file directly cannot run the PHP backend.');
+    }
+
+    // use FormData so files upload correctly
+    formData.set('role', 'hospital');
+
+    const _res = await fetch(`${apiBase}/php/auth/register.php`, { method: 'POST', body: formData, credentials: 'include' });
+    if (_res.status === 405) {
+        throw new Error('The PHP backend is not running. Start the app with: php -S localhost:8000 -t . and open http://localhost:8000/H%20signup.html');
+    }
+    const data = await _res.json();
+    if (!data || !data.success) throw new Error(data?.message || 'Hospital registration failed');
+    alert(data.message || 'Hospital registered');
+    // auto-login
+    try {
+        const _loginRes = await fetch(`${apiBase}/php/auth/login.php`, { method: 'POST', credentials: 'include', body: new URLSearchParams({ email, password, role: 'hospital' }) });
+        const loginRes = await _loginRes.json();
+        if (loginRes && loginRes.success) {
+            alert('Logged in');
+            window.location.href = 'dashboard.html';
+            return;
+        }
+    } catch (e) {
+        // ignore
+    }
+    signupForm.reset();
+    window.location.href = 'hospital.html';
+} catch (error) {
+    console.error('Hospital signup error:', error);
+    alert(error.message || 'Unable to register the hospital');
+    btn.disabled = false;
+    btn.innerHTML = 'Register Hospital';
+}
+
+});
+
+}
+
+const fileInput=document.querySelector("input[type='file']");
+
+if(fileInput){
+
+fileInput.addEventListener("change",()=>{
+
+if(fileInput.files.length>0){
+
+alert(fileInput.files[0].name+" selected.");
+
+}
+
+});
+
+}
+const uploadBox=document.getElementById("uploadBox");
+
+const logoInput=document.getElementById("logoInput");
+
+const preview=document.getElementById("previewImage");
+
+if(uploadBox){
+
+uploadBox.addEventListener("click",()=>{
+
+logoInput.click();
+
+});
+
+logoInput.addEventListener("change",()=>{
+
+const file=logoInput.files[0];
+
+if(file){
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+preview.src=e.target.result;
+
+uploadBox.classList.add("preview");
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+uploadBox.addEventListener("dragover",(e)=>{
+
+e.preventDefault();
+
+uploadBox.classList.add("drag");
+
+});
+
+uploadBox.addEventListener("dragleave",()=>{
+
+uploadBox.classList.remove("drag");
+
+});
+
+uploadBox.addEventListener("drop",(e)=>{
+
+e.preventDefault();
+
+uploadBox.classList.remove("drag");
+
+const file=e.dataTransfer.files[0];
+
+if(file){
+
+logoInput.files=e.dataTransfer.files;
+
+const reader=new FileReader();
+
+reader.onload=function(event){
+
+preview.src=event.target.result;
+
+uploadBox.classList.add("preview");
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+}
+</script>
+
+</body>
+
+</html>

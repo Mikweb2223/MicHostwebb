@@ -1,0 +1,111 @@
+.app-alert-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(196, 0, 24, 0.72);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.app-alert-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.app-alert {
+    width: min(100%, 430px);
+    overflow: hidden;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transform: translateY(14px) scale(0.97);
+    transition: transform 180ms ease;
+}
+
+.app-alert-overlay.is-visible .app-alert {
+    transform: translateY(0) scale(1);
+}
+
+.app-alert__top {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 14px;
+    padding: 40px 40px 0;
+}
+
+.app-alert__icon {
+    display: grid;
+    width: 90px;
+    height: 90px;
+    place-items: center;
+    border-radius: 50%;
+    color: #c40018;
+    background: #ffe5e8;
+    font: 700 40px Poppins, "Segoe UI", sans-serif;
+}
+
+.app-alert__title {
+    margin: 0 0 10px;
+    color: #222222;
+    text-align: center;
+    font: 700 24px/1.25 Poppins, "Segoe UI", sans-serif;
+}
+
+.app-alert__message {
+    margin: 0;
+    padding: 0 40px 30px;
+    color: #666666;
+    text-align: center;
+    font: 400 14px/1.6 Poppins, "Segoe UI", sans-serif;
+    white-space: pre-line;
+}
+
+.app-alert__actions {
+    display: flex;
+    padding: 0 40px 40px;
+}
+
+.app-alert__ok {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    border-radius: 10px;
+    color: #ffffff;
+    background: #c40018;
+    cursor: pointer;
+    font: 600 14px Poppins, "Segoe UI", sans-serif;
+    transition: background 160ms ease, transform 160ms ease;
+}
+
+.app-alert__ok:hover {
+    background: #980014;
+}
+
+.app-alert__ok:focus-visible {
+    outline: 3px solid rgba(215, 25, 32, 0.28);
+    outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+    .app-alert-overlay {
+        padding: 16px;
+    }
+
+    .app-alert__top {
+        padding: 30px 20px 0;
+    }
+
+    .app-alert__message {
+        padding: 0 20px 30px;
+    }
+
+    .app-alert__actions {
+        padding: 0 20px 30px;
+    }
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blood Donation</title>
+<link rel="stylesheet" href="welcome.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+
+<div class="container">
+
+    <span class="dot dot1"></span>
+    <span class="dot dot2"></span>
+    <span class="dot dot3"></span>
+
+    <img src="image/blood-cell.png" class="cell cell1">
+    <img src="image/blood-cell.png" class="cell cell2">
+
+    <div class="drop">
+    </div>
+    <div class="circle"></div>
+    <div class="heart">
+        <i class="fas fa-heart"></i>
+        <div class="heartbeat">
+            <svg viewBox="0 0 120 40">
+
+                <polyline
+                fill="none"
+                stroke="#fff"
+                stroke-width="3"
+
+                points="
+                0,20
+                18,20
+                26,20
+                34,8
+                42,32
+                50,10
+                58,20
+                120,20
+                " />
+
+            </svg>
+        </div>
+
+    </div>
+    <h1>Welcome</h1>
+    <h3>to</h3>
+    <p>MicHost Blood Donation Platform</p>
+    <div class="tag">
+        <i class="fas fa-heart"></i>
+        Saving Lives Together...
+    </div>
+
+    <div class="progress">
+        <div class="bar"></div>
+        <span id="percent">0%</span>
+    </div>
+    <small>Please wait while we prepare your experience</small>
+</div>
+
+<script>
+const bar = document.querySelector(".bar");
+const percent = document.getElementById("percent");
+
+let loading = 0;
+const timer = setInterval(() => {
+loading++;
+bar.style.width = loading + "%";
+percent.innerHTML = loading + "%";
+if (loading >= 100) {
+clearInterval(timer);
+
+// Redirect after a short delay
+setTimeout(() => {
+window.location.href = "dashboard.html";
+}, 500);
+
+}
+
+}, 40);
+</script>
+
+</body>
+</html>

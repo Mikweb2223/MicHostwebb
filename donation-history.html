@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="alert.css">
+<script src="alert.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Donation History | BloodLink</title>
+
+<link rel="stylesheet" href="donation-history.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="logo">
+
+<i class="fas fa-droplet"></i>
+
+<h2>MicHost</h2>
+
+</div>
+
+<ul>
+
+<li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+
+<li id="nearbyHospitalsNav"><a href="hospitals.html"><i class="fas fa-hospital"></i> Nearby Hospitals</a></li>
+
+<li id="appointmentsNav"><a href="appointments.html"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+
+<li class="active"><a href="#"><i class="fas fa-heart"></i> Donation History</a></li>
+
+<li><a href="notification.html"><i class="fas fa-bell"></i> Notifications</a></li>
+
+<li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+
+<li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+
+<li><a href="logout.html"><i class="fas fa-right-from-bracket"></i> Logout</a></li>
+
+</ul>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<header>
+
+<div>
+
+<h1>Donation History</h1>
+
+<p>Track all your blood donations</p>
+
+</div>
+
+<div class="menu-btn" id="menuBtn">
+
+<i class="fas fa-bars"></i>
+
+</div>
+
+
+
+        <!-- NOTIFICATION -->
+        <a href="notification.html" class="notification-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span>0</span>
+        </a>
+
+
+        <!-- PROFILE -->
+        <a href="profile.html" class="header-profile">
+
+            <div class="header-profile-image">
+                <img
+                    id="headerProfileImage"
+                    src="images/default-user.png"
+                    alt="Profile"
+                >
+            </div>
+
+            <div class="header-profile-info">
+                <strong id="headerProfileName">
+                    Michael Adeleke
+                </strong>
+
+                <span id="headerProfileRole">
+                    Individual
+                </span>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </a>
+
+</header>
+
+<!-- Summary -->
+
+<div class="summary">
+
+<div class="card">
+
+<h4>Total Donations</h4>
+
+<h2>8</h2>
+
+</div>
+
+<div class="card">
+
+<h4>Lives Saved</h4>
+
+<h2>24</h2>
+
+</div>
+
+<div class="card">
+
+<h4>Last Donation</h4>
+
+<h2>15 Jul 2026</h2>
+
+</div>
+
+<div class="card">
+
+<h4>Next Eligible</h4>
+
+<h2>15 Oct 2026</h2>
+
+</div>
+
+</div>
+
+<!-- Search -->
+
+<div class="search-box">
+
+<input type="text" id="searchDonation" placeholder="Search hospital...">
+
+<i class="fas fa-search"></i>
+
+</div>
+
+<!-- Table -->
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+
+<th>Hospital</th>
+
+<th>Blood Group</th>
+
+<th>Units</th>
+
+<th>Status</th>
+
+<th>Certificate</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historyTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+    /*=========================================
+        BLOODLINK DONATION HISTORY
+==========================================*/
+
+// Sidebar Toggle
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+
+if (menuBtn) {
+    menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+
+        if (sidebar.classList.contains("active")) {
+            menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+        } else {
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+    });
+}
+
+let donations = [];
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const profileName = localStorage.getItem("profileName") || "User";
+    const profileRole = localStorage.getItem("profileRole") || "Donor";
+    const profileImage = localStorage.getItem("profileImage") || "images/default-user.png";
+
+    const name = document.getElementById("headerProfileName");
+    const role = document.getElementById("headerProfileRole");
+    const image = document.getElementById("headerProfileImage");
+    const nearbyHospitalsNav = document.getElementById("nearbyHospitalsNav");
+    const appointmentsNav = document.getElementById("appointmentsNav");
+
+    if (name) name.textContent = profileName;
+    if (role) role.textContent = profileRole;
+    if (image) image.src = profileImage;
+
+    if (window.location.protocol !== "file:") {
+        try {
+            const endpoint = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""}/php/profile/get-profile.php`;
+            const response = await fetch(endpoint, { credentials: "include" });
+            const data = response.ok ? await response.json() : null;
+
+            if (data?.success && data.user) {
+                const fetchedName = data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || data.user.email || "User";
+                const fetchedRole = data.user.role === "hospital" ? "Hospital" : "Donor";
+                const fetchedImage = data.user.profile_image || "images/default-user.png";
+
+                localStorage.setItem("profileName", fetchedName);
+                localStorage.setItem("profileRole", fetchedRole);
+                localStorage.setItem("profileImage", fetchedImage);
+
+                if (name) name.textContent = fetchedName;
+                if (role) role.textContent = fetchedRole;
+                if (image) image.src = fetchedImage;
+
+                if (fetchedRole === "Hospital") {
+                    if (nearbyHospitalsNav) nearbyHospitalsNav.hidden = true;
+                    if (appointmentsNav) appointmentsNav.hidden = true;
+                }
+            }
+        } catch (error) {
+            console.warn("Profile refresh failed:", error);
+        }
+    }
+
+    if (profileRole === "Hospital") {
+        if (nearbyHospitalsNav) nearbyHospitalsNav.hidden = true;
+        if (appointmentsNav) appointmentsNav.hidden = true;
+    }
+
+    // Fetch donations from backend after DOM ready
+    fetchDonations();
+});
+
+
+const table = document.getElementById("historyTable");
+
+// Display Donation History
+async function fetchDonations() {
+    try {
+        const _res = await fetch('php/donations/list.php', { credentials: 'include' });
+        const data = await _res.json();
+        if (data && data.success) {
+            donations = (data.donations || []).map(d => ({
+                id: d.id,
+                date: d.date || d.donated_at || d.created_at || '',
+                hospital: d.hospital || d.hospital_name || '',
+                blood: d.blood || d.blood_group || d.bloodGroup || (d.blood_group || ''),
+                units: d.units ? String(d.units) : (d.units_donated || ''),
+                status: d.status || 'Completed'
+            }));
+        } else {
+            donations = [];
+        }
+    } catch (err) {
+        console.error('Unable to fetch donations', err);
+        alert('Unable to load donation history');
+        donations = [];
+    }
+    loadHistory(donations);
+    updateStatistics();
+}
+
+function loadHistory(list){
+    table.innerHTML = "";
+    list.forEach((donation, index) => {
+        let statusClass = 'completed';
+        if (donation.status === 'Pending') statusClass = 'pending';
+        if (donation.status === 'Cancelled') statusClass = 'cancelled';
+
+        table.innerHTML += `
+        <tr>
+            <td>${donation.date}</td>
+            <td>${donation.hospital}</td>
+            <td>${donation.blood}</td>
+            <td>${donation.units}</td>
+            <td><span class="status ${statusClass}">${donation.status}</span></td>
+            <td>
+                <button class="download-btn" data-index="${index}">
+                    <i class="fas fa-download"></i> Certificate
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+
+    // Attach download handlers and animate rows
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach((row, i) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            row.style.transition = '.4s';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, i * 120);
+    });
+
+    document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const idx = Number(btn.getAttribute('data-index'));
+            downloadCertificate(idx);
+        });
+    });
+}
+
+/*=========================================
+        SEARCH DONATIONS
+==========================================*/
+
+const search = document.getElementById("searchDonation");
+
+if(search){
+
+search.addEventListener("keyup",()=>{
+
+const value = search.value.toLowerCase();
+
+const filtered = donations.filter(item=>{
+
+return(
+
+item.hospital.toLowerCase().includes(value)
+
+||
+
+item.date.toLowerCase().includes(value)
+
+||
+
+item.status.toLowerCase().includes(value)
+
+);
+
+});
+
+loadHistory(filtered);
+
+});
+
+}
+
+/*=========================================
+      DOWNLOAD CERTIFICATE
+==========================================*/
+
+function downloadCertificate(index){
+    const donor = donations[index];
+    if (!donor) return alert('Donation not found');
+    // Navigate to server certificate download
+    if (donor.id) {
+        window.location = `php/donations/certificate.php?id=${encodeURIComponent(donor.id)}`;
+    } else {
+        alert(`Downloading donation certificate...\n\nHospital: ${donor.hospital}\nDate: ${donor.date}\nBlood Group: ${donor.blood}`);
+    }
+}
+
+/*=========================================
+        SUMMARY STATISTICS
+==========================================*/
+
+function updateStatistics(){
+    const completedList = donations.filter(item => item.status === 'Completed');
+    const completed = completedList.length;
+    const livesSaved = completed * 3;
+    document.querySelectorAll('.card h2')[0].innerHTML = donations.length;
+    document.querySelectorAll('.card h2')[1].innerHTML = livesSaved;
+
+    if (donations.length) {
+        // show most recent donation date
+        const mostRecent = new Date(donations[0].date || donations[0].donated_at || donations[0].created_at);
+        document.querySelectorAll('.card h2')[2].innerHTML = mostRecent.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    }
+
+    if (completedList.length) {
+        const last = completedList.sort((a,b)=> new Date(b.date) - new Date(a.date))[0];
+        const lastDate = new Date(last.date);
+        const next = new Date(lastDate);
+        next.setDate(next.getDate() + 90);
+        document.querySelectorAll('.card h2')[3].innerHTML = next.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    }
+}
+
+/*=========================================
+      TABLE ANIMATION
+==========================================*/
+
+const rows = document.querySelectorAll("tbody tr");
+
+rows.forEach((row,index)=>{
+
+row.style.opacity="0";
+row.style.transform="translateY(20px)";
+
+setTimeout(()=>{
+
+row.style.transition=".4s";
+row.style.opacity="1";
+row.style.transform="translateY(0)";
+
+},index*120);
+
+});
+
+/*=========================================
+        GREETING
+==========================================*/
+
+const hour = new Date().getHours();
+
+if(hour < 12){
+
+console.log("Good Morning");
+
+}else if(hour < 18){
+
+console.log("Good Afternoon");
+
+}else{
+
+console.log("Good Evening");
+
+}
+</script>
+
+</body>
+
+</html>

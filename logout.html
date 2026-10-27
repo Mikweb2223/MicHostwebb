@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Logout | BloodLink</title>
+
+<link rel="stylesheet" href="logout.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="logout-container">
+
+<div class="logout-card">
+
+<div class="icon">
+
+<i class="fas fa-sign-out-alt"></i>
+
+</div>
+
+<h1>Logout</h1>
+
+<p>
+
+Are you sure you want to logout from your MicHost account?
+
+</p>
+
+<div class="buttons">
+
+<button id="cancelBtn" class="cancel">
+
+Cancel
+
+</button>
+
+<button id="logoutBtn" class="logout">
+
+Logout
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+    const logoutBtn = document.getElementById("logoutBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+
+// Cancel Logout
+cancelBtn.addEventListener("click", () => {
+    const profileRole = localStorage.getItem("profileRole");
+    window.location.href = profileRole === "Donor" ? "donor.html" : "dashboard.html";
+
+});
+
+// Logout
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async function() {
+
+        await fetch(
+            "php/auth/logout.php",
+            { credentials: "include" }
+        );
+
+        localStorage.removeItem("profileName");
+        localStorage.removeItem("profileRole");
+        localStorage.removeItem("profileImage");
+
+        window.location.href =
+            "login.html";
+
+    });
+</script>
+
+</body>
+</html>

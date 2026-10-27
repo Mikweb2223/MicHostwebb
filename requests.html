@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" href="alert.css">
+<script src="alert.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Blood Requests | BloodLink</title>
+
+<link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet" href="requests.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar" id="sidebar">
+
+<button class="close-btn" id="closeBtn">
+<i class="fas fa-times"></i>
+</button>
+
+<div class="logo">
+
+<i class="fa-solid fa-droplet"></i>
+
+<h2 class="logo-text">MicHost</h2>
+
+</div>
+
+<ul>
+
+<li onclick="location.href='dashboard.html'">
+
+<i class="fa-solid fa-house"></i>
+
+<span>Dashboard</span>
+
+</li>
+
+<li onclick="location.href='inventory.html'">
+
+<i class="fa-solid fa-warehouse"></i>
+
+<span>Inventory</span>
+
+</li>
+
+<li onclick="location.href='donor.html'">
+
+<i class="fa-solid fa-users"></i>
+
+<span>Donors</span>
+
+</li>
+
+<li class="active">
+
+<i class="fa-solid fa-hand-holding-droplet"></i>
+
+<span>Blood Requests</span>
+
+</li>
+
+<li onclick="location.href='reports.html'">
+
+<i class="fa-solid fa-chart-line"></i>
+
+<span>Reports</span>
+
+</li>
+
+<li onclick="location.href='profile.html'">
+
+<i class="fa-solid fa-user"></i>
+
+<span>Profile</span>
+
+</li>
+
+<li onclick="location.href='settings.html'">
+
+<i class="fa-solid fa-gear"></i>
+
+<span>Settings</span>
+
+</li>
+
+<li onclick="location.href='logout.html'">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span>Logout</span>
+</li>
+
+</ul>
+
+</div>
+
+<div class="main">
+
+<header>
+
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="overlay">
+
+</div>
+
+<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+
+<i class="fa-solid fa-bars"></i>
+</button>
+
+
+<h2 id="requestsTitle">Blood Requests</h2>
+
+ <!-- NOTIFICATION -->
+        <a href="notification.html" class="notification-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span></span>
+        </a>
+
+
+        <!-- PROFILE -->
+        <a href="profile.html" class="header-profile">
+
+            <div class="header-profile-image">
+                <img
+                    id="headerProfileImage"
+                    src="images/default-user.png"
+                    alt="Profile"
+                >
+            </div>
+
+            <div class="header-profile-info">
+                <strong id="headerProfileName">
+                    Michael Adeleke
+                </strong>
+
+                <span id="headerProfileRole">
+                    Individual
+                </span>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </a>
+
+</header>
+
+<!-- Statistics -->
+
+<section class="request-cards">
+
+<div class="request-card red">
+
+<h3>Total Requests</h3>
+
+<h1>128</h1>
+
+</div>
+
+<div class="request-card orange">
+
+<h3>Pending</h3>
+
+<h1>32</h1>
+
+</div>
+
+<div class="request-card green">
+
+<h3>Approved</h3>
+
+<h1>81</h1>
+
+</div>
+
+<div class="request-card purple">
+
+<h3>Emergency</h3>
+
+<h1>15</h1>
+
+</div>
+
+</section>
+
+<!-- Search -->
+
+<div class="request-tools">
+
+<input
+type="text"
+id="searchRequest"
+placeholder="Search patient or hospital">
+
+<select id="filterBlood">
+
+<option value="">All Blood Groups</option>
+
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>AB+</option>
+<option>AB-</option>
+<option>O+</option>
+<option>O-</option>
+
+</select>
+
+<button id="addRequest" type="button">
+
+<i class="fa-solid fa-plus"></i>
+
+New Request
+
+</button>
+
+</div>
+
+<!-- Table -->
+
+<div class="request-table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Donor</th>
+
+<th>Patient</th>
+
+<th>Blood</th>
+
+<th>Units</th>
+
+<th>Hospital</th>
+
+<th>Priority</th>
+
+<th>Status</th>
+
+<th>Date</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="requestTable">
+
+<tr>
+
+<td>Michael A.</td>
+
+<td>O+</td>
+
+<td>3</td>
+
+<td>City Hospital</td>
+
+<td>
+
+<span class="emergency">
+
+Emergency
+
+</span>
+
+</td>
+
+<td>
+
+<span class="pending">
+
+Pending
+
+</span>
+
+</td>
+
+<td>Today</td>
+
+<td>
+
+<button class="view">
+
+<i class="fa-solid fa-eye"></i>
+
+</button>
+
+<button class="approve">
+
+<i class="fa-solid fa-check"></i>
+
+</button>
+
+<button class="delete">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- Modal -->
+
+<div class="modal" id="requestModal">
+
+<div class="modal-content">
+
+<h2>New Blood Request</h2>
+
+<form id="requestForm">
+
+<input
+name="patient"
+type="text"
+placeholder="Patient Name"
+required>
+
+<input
+name="hospital"
+type="text"
+placeholder="Hospital Name"
+required>
+
+<select name="blood" required>
+
+<option value="">Blood Group</option>
+
+<option value="A+">A+</option>
+<option value="A-">A-</option>
+<option value="B+">B+</option>
+<option value="B-">B-</option>
+<option value="AB+">AB+</option>
+<option value="AB-">AB-</option>
+<option value="O+">O+</option>
+<option value="O-">O-</option>
+
+</select>
+
+<input
+name="units"
+type="number"
+min="1"
+placeholder="Units Required"
+required>
+
+<select name="priority" required>
+
+<option value="Normal">Normal</option>
+<option value="Emergency">Emergency</option>
+
+</select>
+
+<input
+name="date"
+type="date"
+required>
+
+<textarea
+name="notes"
+placeholder="Additional Notes"></textarea>
+
+<div class="modal-buttons">
+
+<button type="submit">
+
+Submit
+
+</button>
+
+<button
+type="button"
+id="closeRequest">
+
+Cancel
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+const closeBtn = document.getElementById("closeBtn");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+/* BLOOD REQUEST MANAGEMENT */
+
+const requestModal = document.getElementById("requestModal");
+const addRequestBtn = document.getElementById("addRequest");
+const closeRequest = document.getElementById("closeRequest");
+const requestForm = document.getElementById("requestForm");
+const requestTable = document.getElementById("requestTable");
+const searchRequest = document.getElementById("searchRequest");
+const filterBlood = document.getElementById("filterBlood");
+const requestTools = document.querySelector(".request-tools");
+
+let requests = [];
+let viewerRole = "donor";
+
+async function loadRequests() {
+    try {
+        const response = await fetch("php/requests/list.php", { credentials: "include" });
+        const data = await response.json();
+
+        if (!data.success) {
+            if (response.status === 401) {
+                window.location.href = "login.html";
+                return;
+            }
+            throw new Error(data.message || "Unable to load blood requests.");
+        }
+
+        viewerRole = data.viewer_role || "donor";
+        const isHospital = viewerRole === "hospital";
+        const title = document.getElementById("requestsTitle");
+        if (title) title.textContent = isHospital ? "Donor Blood Requests" : "My Blood Requests";
+        if (addRequestBtn) addRequestBtn.hidden = isHospital;
+        if (requestTools) requestTools.style.display = isHospital ? "none" : "flex";
+
+        requests = (data.requests || []).map(item => ({
+            id: Number(item.id),
+            donor: item.donor_name || item.donor_email || "Unknown donor",
+            patient: item.patient_name,
+            hospital: item.hospital_name,
+            blood: item.blood_group,
+            units: Number(item.units),
+            priority: item.priority,
+            status: item.status,
+            date: item.request_date,
+            notes: item.notes || ""
+        }));
+
+        renderRequests();
+    } catch (error) {
+        console.error("Failed to load requests:", error);
+        requests = [];
+        renderRequests();
+    }
+}
+
+
+/* RENDER TABLE */
+
+function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>\'"]/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;"
+    })[character]);
+}
+
+function renderRequests(){
+    requestTable.innerHTML = "";
+
+    requests.forEach((request, index) => {
+        const priorityClass = request.priority === "Emergency" ? "emergency" : "approved";
+        const statusClass = request.status === "Approved"
+            ? "approved"
+            : request.status === "Rejected" ? "rejected" : "pending";
+
+        requestTable.innerHTML += `
+            <tr>
+                <td>${escapeHtml(request.donor)}</td>
+                <td>${escapeHtml(request.patient)}</td>
+                <td>${escapeHtml(request.blood)}</td>
+                <td>${request.units}</td>
+                <td>${escapeHtml(request.hospital)}</td>
+                <td><span class="${priorityClass}">${escapeHtml(request.priority)}</span></td>
+                <td><span class="${statusClass}">${escapeHtml(request.status)}</span></td>
+                <td>${escapeHtml(request.date)}</td>
+                <td>
+                    <button class="view" onclick="viewRequest(${index})" title="View request"><i class="fa-solid fa-eye"></i></button>
+                    <button class="approve" onclick="approveRequest(${index})" title="Approve request"><i class="fa-solid fa-check"></i></button>
+                    <button class="reject" onclick="rejectRequest(${index})" title="Reject request"><i class="fa-solid fa-xmark"></i></button>
+                    ${viewerRole === "hospital" ? "" : `<button class="delete" onclick="deleteRequest(${index})" title="Delete request"><i class="fa-solid fa-trash"></i></button>`}
+                </td>
+            </tr>`;
+    });
+
+localStorage.setItem("bloodRequests",JSON.stringify(requests));
+
+updateCards();
+
+}
+
+loadRequests();
+
+/* OPEN & CLOSE MODAL */
+
+function openRequestModal() {
+    if (!requestModal) return;
+    requestModal.classList.add("active");
+}
+
+function closeRequestModal() {
+    if (!requestModal) return;
+    requestModal.classList.remove("active");
+}
+
+if (addRequestBtn) {
+    addRequestBtn.addEventListener("click", openRequestModal);
+}
+
+if (closeRequest) {
+    closeRequest.addEventListener("click", closeRequestModal);
+}
+
+/* ADD REQUEST */
+
+requestForm.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+
+    const formData = new FormData(requestForm);
+    const patient = String(formData.get("patient") || "").trim();
+    const hospital = String(formData.get("hospital") || "").trim();
+    const blood = String(formData.get("blood") || "").trim();
+    const units = Number(formData.get("units"));
+    const priority = String(formData.get("priority") || "Normal").trim();
+    const date = String(formData.get("date") || "").trim();
+    const notes = String(formData.get("notes") || "").trim();
+
+    if (!patient || !hospital || !blood || !date || !Number.isFinite(units) || units < 1) {
+        alert("Please complete all request fields.");
+        return;
+    }
+
+    try {
+        const payload = new FormData();
+        payload.append("patient", patient);
+        payload.append("hospital", hospital);
+        payload.append("blood", blood);
+        payload.append("units", String(units));
+        payload.append("priority", priority);
+        payload.append("date", date);
+        payload.append("notes", notes);
+
+        const response = await fetch("php/requests/create.php", {
+            method: "POST",
+            body: payload,
+            credentials: "include"
+        });
+
+        const text = await response.text();
+        let data;
+
+        try {
+            data = text ? JSON.parse(text) : null;
+        } catch (error) {
+            throw new Error(text || "Unable to submit blood request.");
+        }
+
+        if (!response.ok || !data?.success) {
+            throw new Error(data?.message || "Unable to submit blood request.");
+        }
+
+        requestForm.reset();
+        closeRequestModal();
+        await loadRequests();
+        alert(data.message || "Blood request submitted successfully.");
+    } catch (error) {
+        console.error("Blood request creation failed:", error);
+        alert(error.message || "Unable to submit blood request.");
+    }
+});
+
+/* SEARCH */
+
+searchRequest.addEventListener("keyup",()=>{
+
+const keyword = searchRequest.value.toLowerCase();
+
+const rows = requestTable.querySelectorAll("tr");
+
+rows.forEach(row=>{
+
+const patient=row.children[1].innerText.toLowerCase();
+
+const hospital=row.children[4].innerText.toLowerCase();
+
+row.style.display=
+
+patient.includes(keyword) ||
+
+hospital.includes(keyword)
+
+? ""
+
+: "none";
+
+});
+
+});
+
+/* profile and notification */
+document.addEventListener("DOMContentLoaded", async () => {
+    const currentName = localStorage.getItem("profileName") || "User";
+    const currentRole = localStorage.getItem("profileRole") || "Donor";
+    const currentImage = localStorage.getItem("profileImage") || "images/default-user.png";
+
+    const name = document.getElementById("headerProfileName");
+    const role = document.getElementById("headerProfileRole");
+    const image = document.getElementById("headerProfileImage");
+
+    if (name) name.textContent = currentName;
+    if (role) role.textContent = currentRole;
+    if (image) image.src = currentImage;
+
+    if (window.location.protocol === "file:") return;
+
+    try {
+        const endpoint = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""}/php/profile/get-profile.php`;
+        const response = await fetch(endpoint, { credentials: "include" });
+        const data = response.ok ? await response.json() : null;
+
+        if (data?.success && data.user) {
+            const fetchedName = data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || data.user.email || "User";
+            const fetchedRole = data.user.role === "hospital" ? "Hospital" : "Donor";
+            const fetchedImage = data.user.profile_image || "images/default-user.png";
+
+            localStorage.setItem("profileName", fetchedName);
+            localStorage.setItem("profileRole", fetchedRole);
+            localStorage.setItem("profileImage", fetchedImage);
+
+            if (name) name.textContent = fetchedName;
+            if (role) role.textContent = fetchedRole;
+            if (image) image.src = fetchedImage;
+        }
+    } catch (error) {
+        console.warn("Profile refresh failed:", error);
+    }
+});
+
+/* FILTER BLOOD GROUP */
+
+filterBlood.addEventListener("change",()=>{
+
+const value = filterBlood.value;
+
+const rows = requestTable.querySelectorAll("tr");
+
+rows.forEach(row=>{
+
+const blood=row.children[2].innerText;
+
+row.style.display=
+
+value==="" || blood===value
+
+? ""
+
+: "none";
+
+});
+
+});
+
+/* VIEW REQUEST */
+
+function viewRequest(index){
+
+const request=requests[index];
+
+alert(
+
+`Patient: ${request.patient}
+
+Hospital: ${request.hospital}
+
+Blood Group: ${request.blood}
+
+Units: ${request.units}
+
+Priority: ${request.priority}
+
+Status: ${request.status}
+
+Notes: ${request.notes}`
+
+);
+
+}
+
+/* APPROVE REQUEST */
+
+async function updateRequestStatus(index, status){
+    const request = requests[index];
+    try {
+        const response = await fetch("php/requests/update.php", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ id: String(request.id), status })
+        });
+        const data = await response.json();
+        if (!data.success) throw new Error(data.message || "Unable to update request.");
+        await loadRequests();
+    } catch (error) {
+        alert(error.message || "Unable to update request.");
+    }
+}
+
+function approveRequest(index){
+    updateRequestStatus(index, "Approved");
+}
+
+/* REJECT REQUEST */
+
+function rejectRequest(index){
+    updateRequestStatus(index, "Rejected");
+}
+
+/* DELETE REQUEST */
+
+async function deleteRequest(index){
+    if (!confirm("Delete this request?")) return;
+    try {
+        const response = await fetch("php/requests/delete.php", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ id: String(requests[index].id) })
+        });
+        const data = await response.json();
+        if (!data.success) throw new Error(data.message || "Unable to delete request.");
+        await loadRequests();
+    } catch (error) {
+        alert(error.message || "Unable to delete request.");
+    }
+
+}
+
+/* UPDATE STATISTICS */
+
+function updateCards(){
+
+const cards=document.querySelectorAll(".request-card h1");
+
+if(cards.length<4) return;
+
+cards[0].innerText=requests.length;
+
+cards[1].innerText=requests.filter(r=>r.status==="Pending").length;
+
+cards[2].innerText=requests.filter(r=>r.status==="Approved").length;
+
+cards[3].innerText=requests.filter(r=>r.priority==="Emergency").length;
+
+}
+
+/* CLOSE MODAL */
+
+window.onclick=(e)=>{
+
+if(e.target===requestModal){
+
+requestModal.classList.remove("active");
+
+}
+
+};
+</script>
+
+</body>
+
+</html>

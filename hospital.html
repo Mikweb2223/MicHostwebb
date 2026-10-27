@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="alert.css">
+    <script src="alert.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Login | Blood Donation</title>
+
+    <link rel="stylesheet" href="hospital.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+</head>
+
+<body>
+
+<div class="background">
+
+    <!-- Floating Blood Cells -->
+    <img src="image/blood-cell.png" class="blood blood1">
+    <img src="image/blood-cell.png" class="blood blood2">
+    <img src="image/blood-cell.png" class="blood blood3">
+    <img src="image/blood-cell.png" class="blood blood4">
+
+    <div class="login-card">
+
+        <!-- Back -->
+        <button class="back-btn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Logo -->
+        <div class="logo">
+            <img src="image/blood-cell.png" alt="Blood Donation">
+        </div>
+
+        <h1>Welcome Back!</h1>
+
+        <p>
+            Hospital Portal<br>
+            Sign in to manage blood requests and donors.
+        </p>
+
+        <!-- Tabs -->
+        <div class="tabs">
+
+            <button class="tab active">
+                Hospital Login
+            </button>
+
+            <button class="tab"
+            onclick="location.href='H signup.html'">
+                Register
+            </button>
+
+        </div>
+
+        <form id="loginForm">
+
+            <!-- Hospital Email -->
+
+            <label>Hospital Email</label>
+
+            <div class="input-box">
+
+                <i class="fa-regular fa-envelope"></i>
+
+                <input
+                type="email"
+                name="email"
+                placeholder="hospital@email.com"
+                required>
+
+            </div>
+
+            <!-- Password -->
+
+            <label>Password</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter password"
+                required>
+
+                <i class="fa-regular fa-eye togglePassword"></i>
+
+            </div>
+
+            <div class="options">
+
+                <label>
+
+                    <input type="checkbox">
+
+                    Remember me
+
+                </label>
+
+                <a href="forgot-password.html">
+
+                    Forgot Password?
+
+                </a>
+
+            </div>
+
+            <button class="login-btn">
+
+                Login
+
+                <span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </button>
+
+        </form>
+
+        <div class="divider">
+
+            <span></span>
+
+            <p>or continue with</p>
+
+            <span></span>
+
+        </div>
+
+        <button class="google-btn">
+
+            <img src="images/google.png">
+
+            Continue with Google
+
+        </button>
+
+        <div class="bottom-text">
+
+            New Hospital?
+
+            <a href="H signup.html">
+
+                Register Here
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+// Password Toggle
+const password = document.getElementById("password");
+const togglePassword = document.querySelector(".togglePassword");
+
+if (togglePassword) {
+    togglePassword.addEventListener("click", () => {
+
+        const type =
+            password.getAttribute("type") === "password"
+                ? "text"
+                : "password";
+
+        password.setAttribute("type", type);
+
+        togglePassword.classList.toggle("fa-eye");
+        togglePassword.classList.toggle("fa-eye-slash");
+    });
+}
+
+const tabs = document.querySelectorAll(".tab");
+tabs.forEach(tab => {
+
+    tab.addEventListener("click", () => {
+
+        tabs.forEach(btn => btn.classList.remove("active"));
+
+        tab.classList.add("active");
+
+    });
+
+});
+
+const inputs = document.querySelectorAll(".input-box input");
+
+inputs.forEach(input => {
+
+    input.addEventListener("focus", () => {
+
+        input.parentElement.style.transform = "scale(1.02)";
+
+    });
+
+    input.addEventListener("blur", () => {
+
+        input.parentElement.style.transform = "scale(1)";
+
+    });
+
+});
+
+
+const googleBtn = document.querySelector(".google-btn");
+
+if (googleBtn) {
+
+    googleBtn.addEventListener("click", function(e){
+
+        e.preventDefault();
+
+        const ripple = document.createElement("span");
+
+        ripple.classList.add("ripple");
+
+        ripple.style.left = `${e.offsetX}px`;
+        ripple.style.top = `${e.offsetY}px`;
+
+        this.appendChild(ripple);
+
+        setTimeout(() => {
+
+            ripple.remove();
+
+        },600);
+
+    });
+
+}
+
+const loginForm = document.getElementById('loginForm');
+const apiBase = window.location.port === '5500'
+    ? `${window.location.protocol}//${window.location.hostname}:8000`
+    : '';
+
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(loginForm);
+        const email = (formData.get('email') || '').toString().trim();
+        const pass = (formData.get('password') || '').toString();
+
+        if (email === '' || pass === '') {
+            alert('Please complete all fields.');
+            return;
+        }
+
+        if (pass.length < 8 || !/[A-Z]/.test(pass) || !/[a-z]/.test(pass) || !/[0-9]/.test(pass) || !/[^A-Za-z0-9]/.test(pass)) {
+            alert('Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.');
+            return;
+        }
+
+        const btn = document.querySelector('.login-btn');
+        btn.disabled = true;
+        try {
+            const _res = await fetch(`${apiBase}/php/auth/login.php`, { method: 'POST', credentials: 'include', body: new URLSearchParams({ email, password: pass, role: 'hospital' }) });
+            const data = await _res.json();
+            if (!data || !data.success) throw new Error(data?.message || 'Hospital login failed');
+            if (data.requires_2fa) {
+                const code = prompt('Enter the 6-digit code from Google Authenticator:');
+                if (!code) return;
+                const verifyResponse = await fetch(`${apiBase}/php/auth/totp-verify.php`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: new URLSearchParams({ code: code.trim() })
+                });
+                const verifyData = await verifyResponse.json();
+                if (!verifyData.success) throw new Error(verifyData.message || 'Authenticator verification failed');
+            }
+            alert('Login successful');
+            window.location.href = 'dashboard.html';
+            return;
+        } catch (err) {
+            console.error('Hospital login error:', err);
+            alert(err.message || 'Unable to log in right now.');
+            btn.disabled = false;
+            btn.innerHTML = `\n                Login\n                <span>\n                    <i class="fa-solid fa-arrow-right"></i>\n                </span>\n            `;
+        }
+    });
+}
+
+const backBtn=document.querySelector(".back-btn");
+
+if(backBtn){
+
+backBtn.onclick=()=>{
+
+history.back();
+
+}
+
+}
+
+const card=document.querySelector(".login-card");
+
+document.addEventListener("mousemove",(e)=>{
+
+let x=(window.innerWidth/2-e.pageX)/40;
+
+let y=(window.innerHeight/2-e.pageY)/40;
+
+card.style.transform=
+`rotateY(${x}deg) rotateX(${-y}deg)`;
+
+});
+
+document.addEventListener("mouseleave",()=>{
+
+card.style.transform="rotateY(0deg) rotateX(0deg)";
+
+});
+
+window.addEventListener("load",()=>{
+
+card.style.opacity="0";
+
+card.style.transform="translateY(30px)";
+
+setTimeout(()=>{
+
+card.style.transition=".8s";
+
+card.style.opacity="1";
+
+card.style.transform="translateY(0px)";
+
+},200);
+
+});
+</script>
+
+</body>
+</html>

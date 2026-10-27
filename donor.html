@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="alert.css">
+<script src="alert.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BloodLink | Donor Dashboard</title>
+
+<link rel="stylesheet" href="donor.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+
+<!-- Mobile Menu -->
+<div class="menu-btn" id="menuBtn">
+    <i class="fas fa-bars"></i>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+
+<div class="logo">
+<i class="fas fa-droplet"></i>
+<h2>MicHost</h2>
+</div>
+
+<ul>
+
+<li class="active">
+<a href="dashboard.html">
+<i class="fas fa-home"></i>
+Dashboard
+</a>
+</li>
+
+<li id="nearbyHospitalsNav">
+<a href="hospitals.html">
+<i class="fas fa-hospital"></i>
+Nearby Hospitals
+</a>
+</li>
+
+<li id="appointmentsNav">
+<a href="appointments.html">
+<i class="fas fa-calendar-check"></i>
+<span>Appointment</span>
+</a>
+</li>
+
+<li>
+<a href="donation-history.html">
+<i class="fas fa-heart"></i>
+Donation History
+</a>
+</li>
+
+<li>
+<a href="notification.html">
+<i class="fas fa-bell"></i>
+Notifications
+</a>
+</li>
+
+<li>
+<a href="profile.html">
+<i class="fas fa-user"></i>
+Profile
+</a>
+</li>
+
+<li>
+<a href="settings.html">
+<i class="fas fa-gear"></i>
+Settings
+</a>
+</li>
+
+<li>
+<a href="logout.html">
+<i class="fas fa-right-from-bracket"></i>
+Logout
+</a>
+</li>
+
+</ul>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<header>
+
+<div>
+
+<h1>Hello, Micheal </h1>
+
+<p>Welcome back to BloodLink</p>
+
+</div>
+
+
+        <!-- NOTIFICATION -->
+        <a href="notification.html" class="notification-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span></span>
+        </a>
+
+
+        <!-- PROFILE -->
+        <a href="profile.html" class="header-profile">
+
+            <div class="header-profile-image">
+                <img
+                    id="headerProfileImage"
+                    src="images/default-user.png"
+                    alt="Profile"
+                >
+            </div>
+
+            <div class="header-profile-info">
+                <strong id="headerProfileName">
+                    Michael Adeleke
+                </strong>
+
+                <span id="headerProfileRole">
+                    Individual
+                </span>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </a>
+
+</header>
+
+<!-- Cards -->
+
+<div class="cards">
+
+<div class="card">
+
+<i class="fas fa-droplet"></i>
+
+<h3>Blood Group</h3>
+
+<h2>A+</h2>
+
+</div>
+
+<div class="card">
+
+<i class="fas fa-heart"></i>
+
+<h3>Lives Saved</h3>
+
+<h2>5</h2>
+
+</div>
+
+<div class="card">
+
+<i class="fas fa-calendar"></i>
+
+<h3>Appointments</h3>
+
+<h2>2</h2>
+
+</div>
+
+<div class="card">
+
+<i class="fas fa-hospital"></i>
+
+<h3>Nearby Hospitals</h3>
+
+<h2>12</h2>
+
+</div>
+
+</div>
+
+<!-- Emergency -->
+
+<section id="emergencyRequestsSection">
+
+<h2>Emergency Requests</h2>
+
+<div class="emergency">
+
+<div class="request">
+
+<h3>General Hospital</h3>
+
+<p>Needs A+ Blood</p>
+
+<span>1.2 km Away</span>
+
+<button>Donate Now</button>
+
+</div>
+
+<div class="request">
+
+<h3>Mercy Hospital</h3>
+
+<p>Needs O- Blood</p>
+
+<span>3.5 km Away</span>
+
+<button>View</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Nearby Hospitals -->
+
+<section id="nearbyHospitalsSection">
+
+<h2>Nearby Hospitals</h2>
+
+<div class="hospital-grid">
+
+<div class="hospital">
+
+<h3>City Hospital</h3>
+
+<p aria-label="5 star rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i></p>
+
+<p>Needs A+, B+</p>
+
+<button>Book Appointment</button>
+
+</div>
+
+<div class="hospital">
+
+<h3>Hope Medical Centre</h3>
+
+<p aria-label="4 star rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i></p>
+
+<p>Needs O+, AB+</p>
+
+<button>Book Appointment</button>
+
+</div>
+
+<div class="hospital">
+
+<h3>St Mary's Hospital</h3>
+
+<p aria-label="5 star rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i></p>
+
+<p>Needs A-</p>
+
+<button>Book Appointment</button>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<script>
+/* BLOODLINK DONOR DASHBOARD */
+
+// Sidebar
+const sidebar = document.getElementById("sidebar");
+const menuBtn = document.getElementById("menuBtn");
+
+// Toggle Sidebar
+menuBtn.addEventListener("click", () => {
+
+    sidebar.classList.toggle("active");
+
+    if (sidebar.classList.contains("active")) {
+
+        menuBtn.innerHTML = `<i class="fas fa-times"></i>`;
+
+    } else {
+
+        menuBtn.innerHTML = `<i class="fas fa-bars"></i>`;
+
+    }
+
+});
+
+// Close sidebar when clicking outside
+document.addEventListener("click", (e) => {
+
+    if (
+        window.innerWidth <= 992 &&
+        !sidebar.contains(e.target) &&
+        !menuBtn.contains(e.target)
+    ) {
+
+        sidebar.classList.remove("active");
+        menuBtn.innerHTML = `<i class="fas fa-bars"></i>`;
+
+    }
+
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const currentName = localStorage.getItem("profileName") || "User";
+    const currentRole = localStorage.getItem("profileRole") || "Donor";
+    const currentImage = localStorage.getItem("profileImage") || "images/default-user.png";
+
+    const name = document.getElementById("headerProfileName");
+    const role = document.getElementById("headerProfileRole");
+    const image = document.getElementById("headerProfileImage");
+
+    if (name) name.textContent = currentName;
+    if (role) role.textContent = currentRole;
+    if (image) image.src = currentImage;
+
+    function updateSidebarForRole(userRole) {
+        const isHospital = userRole === "Hospital" || userRole === "hospital";
+        const nearbyHospitalsNav = document.getElementById("nearbyHospitalsNav");
+        const appointmentsNav = document.getElementById("appointmentsNav");
+        const emergencyRequestsSection = document.getElementById("emergencyRequestsSection");
+        const nearbyHospitalsSection = document.getElementById("nearbyHospitalsSection");
+
+        if (nearbyHospitalsNav) nearbyHospitalsNav.hidden = isHospital;
+        if (appointmentsNav) appointmentsNav.hidden = isHospital;
+        if (emergencyRequestsSection) emergencyRequestsSection.style.display = isHospital ? "none" : "block";
+        if (nearbyHospitalsSection) nearbyHospitalsSection.style.display = isHospital ? "none" : "block";
+    }
+
+    updateSidebarForRole(currentRole);
+
+    if (window.location.protocol === "file:") return;
+
+    try {
+        const endpoint = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""}/php/profile/get-profile.php`;
+        const response = await fetch(endpoint, { credentials: "include" });
+        const data = response.ok ? await response.json() : null;
+
+        if (data?.success && data.user) {
+            const fetchedName = data.user.hospital_name || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim() || data.user.email || "User";
+            const fetchedRole = data.user.role === "hospital" ? "Hospital" : "Donor";
+            const fetchedImage = data.user.profile_image || "images/default-user.png";
+
+            localStorage.setItem("profileName", fetchedName);
+            localStorage.setItem("profileRole", fetchedRole);
+            localStorage.setItem("profileImage", fetchedImage);
+            updateSidebarForRole(fetchedRole);
+
+            if (name) name.textContent = fetchedName;
+            if (role) role.textContent = fetchedRole;
+            if (image) image.src = fetchedImage;
+        }
+    } catch (error) {
+        console.warn("Profile refresh failed:", error);
+    }
+});
+
+/* CARD ANIMATION */
+
+const cards = document.querySelectorAll(".card");
+
+cards.forEach((card, index) => {
+
+    card.style.opacity = "0";
+    card.style.transform = "translateY(40px)";
+
+    setTimeout(() => {
+
+        card.style.transition = ".5s";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+
+    }, index * 200);
+
+});
+
+/* DONATE BUTTON */
+
+const donateButtons = document.querySelectorAll(".request button");
+
+donateButtons.forEach(btn => {
+
+    btn.addEventListener("click", () => {
+
+        alert("Redirecting to appointment booking...");
+
+        window.location.href = "appointments.html";
+
+    });
+
+});
+
+/* BOOK APPOINTMENT BUTTON */
+
+const bookButtons = document.querySelectorAll(".hospital button");
+
+bookButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        alert("Opening appointment page...");
+
+        window.location.href = "appointments.html";
+
+    });
+
+});
+
+/* NOTIFICATION BADGE */
+
+const notificationCount = 3;
+
+const notificationLink = document.querySelector(
+".sidebar ul li:nth-child(5) a"
+);
+
+const badge = document.createElement("span");
+
+badge.className = "badge";
+
+badge.innerHTML = notificationCount;
+
+notificationLink.appendChild(badge);
+
+/* GET USER LOCATION */
+
+function getLocation(){
+
+    if(!navigator.geolocation){
+
+        alert("Geolocation is not supported.");
+
+        return;
+
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        (position)=>{
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            console.log("Latitude:",latitude);
+            console.log("Longitude:",longitude);
+
+            // Save temporarily
+            localStorage.setItem("latitude",latitude);
+            localStorage.setItem("longitude",longitude);
+
+        },
+
+        ()=>{
+
+            alert("Location permission denied.");
+
+        }
+
+    );
+
+}
+
+getLocation();
+
+/* HOSPITAL SEARCH (Placeholder) */
+
+const searchInput = document.getElementById("hospitalSearch");
+
+if(searchInput){
+
+searchInput.addEventListener("keyup",()=>{
+
+const value = searchInput.value.toLowerCase();
+
+document.querySelectorAll(".hospital").forEach(card=>{
+
+const name = card.innerText.toLowerCase();
+
+card.style.display = name.includes(value)
+? "block"
+: "none";
+
+});
+
+});
+
+}
+
+
+/* LIVE CLOCK */
+
+const clock = document.getElementById("clock");
+
+if(clock){
+
+setInterval(()=>{
+
+const now = new Date();
+
+clock.innerHTML =
+now.toLocaleTimeString();
+
+},1000);
+
+}
+
+
+</script>
+
+</body>
+</html>

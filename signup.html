@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="alert.css">
+    <script src="alert.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="signup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        
+        
+</head>
+
+<body>
+
+<div class="container">
+    <!-- Back Button -->
+    <div class="back-btn">
+        <i class="fa-solid fa-arrow-left" onclick="window.history.back()"></i>
+    </div>
+    <!-- Header -->
+    <div class="title">
+        <h1>Create Account</h1>
+        <p>Join us and start saving lives</p>
+    </div>
+    <!-- Form -->
+    <form id="signupForm" action="php/auth/register.php" method="post" enctype="multipart/form-data">
+
+        <div class="input-box">
+            <label>Full Name</label>
+            <div class="field">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="full_name" placeholder="Enter your full name" required>
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label>Email</label>
+            <div class="field">
+                <i class="fa-regular fa-envelope"></i>
+                <input type="email" name="email" placeholder="Enter your email" required>
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label>Phone Number</label>
+            <div class="field">
+                <i class="fa-solid fa-phone"></i>
+                <input type="text" name="phone" placeholder="Enter your phone number" required>
+            </div>
+        </div>
+
+        <div class="input-box">
+
+            <label>Blood Type</label>
+
+            <div class="field">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <select name="blood_group" required>
+
+                    <option value="">Select your blood type</option>
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+
+                </select>
+            
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label>Password</label>
+            <div class="field">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+                <i class="fa-regular fa-eye toggle" onclick="togglePassword('password',this)"></i>
+
+            </div>
+        </div>
+        <div class="input-box">
+            <label>Confirm Password</label>
+            <div class="field">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="confirm" name="confirm_password" placeholder="Confirm your password" required>
+                <i class="fa-regular fa-eye toggle" onclick="togglePassword('confirm',this)"></i>
+
+            </div>
+        </div>
+
+        <label>Upload image</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-image"></i>
+
+                <input type="file" name="profile_image" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+
+            </div>
+
+        <div class="check">
+            <input type="checkbox" name="agree" required>
+            <p>
+                I agree to the
+                <a href="terms.html" target="_blank" rel="noopener">Terms & Conditions</a>
+                and
+                <a href="terms.html#privacy" target="_blank" rel="noopener">Privacy Policy</a>
+            </p>
+
+        </div>
+
+        <button type="submit" class="submit-btn">
+            Create Account
+            <span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </span>
+        </button>
+
+        <p class="login-prompt">
+            Already have an account?
+            <a href="login.html">Log in</a>
+        </p>
+
+        <script>
+        function togglePassword(id, icon) {
+            const input = document.getElementById(id);
+            if (!input) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function validateEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+
+const form = document.getElementById("signupForm");
+const isFileUrl = window.location.protocol === "file:";
+const isPhpServer = window.location.protocol.startsWith("http") &&
+    (window.location.port === "" || window.location.port === "80" || window.location.port === "443" || window.location.port === "8000");
+const registerEndpoint = isFileUrl
+    ? null
+    : new URL("php/auth/register.php", window.location.href).href;
+
+if (form) {
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const fullName = (formData.get("full_name") || "").toString().trim();
+        const email = (formData.get("email") || "").toString().trim();
+        const phone = (formData.get("phone") || "").toString().trim();
+        const blood = (formData.get("blood_group") || "").toString();
+        const password = (formData.get("password") || "").toString();
+        const confirm = (formData.get("confirm_password") || "").toString();
+        const agreed = formData.get("agree") !== null;
+        const image = formData.get("profile_image");
+        const maxImageSize = 5 * 1024 * 1024;
+
+        if (!fullName || !email || !phone || !blood || !password || !confirm) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            alert("Please enter a valid email.");
+            return;
+        }
+
+        if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+            alert("Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.");
+            return;
+        }
+
+        if (password !== confirm) {
+            alert("Passwords do not match.");
+            return;
+        }
+
+        if (!agreed) {
+            alert("Please accept the Terms & Conditions.");
+            return;
+        }
+
+        if (image && image.size > 0) {
+            if (!['image/jpeg', 'image/png'].includes(image.type)) {
+                alert("Profile image must be a JPG or PNG file.");
+                return;
+            }
+            if (image.size > maxImageSize) {
+                alert("Profile image must be 5 MB or smaller.");
+                return;
+            }
+        }
+
+        const btn = form.querySelector("button[type='submit']");
+        btn.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Creating Account...
+        `;
+        btn.disabled = true;
+
+        try {
+            if (isFileUrl) {
+                throw new Error("Open this page through the PHP server, for example http://localhost:8000/signup.html. Opening the HTML file directly cannot run the PHP backend.");
+            }
+
+            if (!registerEndpoint) {
+                throw new Error("PHP backend URL is unavailable. Start the project using PHP on port 8000 and reload the page.");
+            }
+
+            let response;
+            try {
+                response = await fetch(registerEndpoint, {
+                    method: "POST",
+                    body: formData,
+                    credentials: "include"
+                });
+            } catch (networkError) {
+                throw new Error("Cannot reach the PHP backend. Start the project server with PHP on port 8000 and open the page through http://localhost:8000/signup.html.");
+            }
+
+            const text = await response.text();
+
+            if (response.status === 405) {
+                throw new Error("The PHP registration endpoint was not found. Make sure the project server is running on port 8000.");
+            }
+
+            if (!text || text.trim() === "") {
+                throw new Error(response.statusText || `Empty response (status ${response.status})`);
+            }
+
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (parseErr) {
+                // Backend returned non-JSON (maybe an error page). Surface it to the user.
+                console.error('Non-JSON response:', text);
+                throw new Error(text.length > 200 ? text.slice(0,200) + '...' : text);
+            }
+
+            if (!data || !data.success) {
+                throw new Error(data?.message || "Registration failed.");
+            }
+
+            alert(data.message || "Registration Successful!");
+            form.reset();
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Registration error:", error);
+            alert(error.message || "Unable to register at the moment.");
+            btn.disabled = false;
+            btn.innerHTML = `
+                Create Account
+                <span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </span>
+            `;
+        }
+    });
+}
+
+const fields = document.querySelectorAll(".field");
+fields.forEach(field => {
+    field.addEventListener("mouseenter", () => {
+        field.style.transform = "translateY(-2px)";
+    });
+
+    field.addEventListener("mouseleave", () => {
+        field.style.transform = "translateY(0)";
+    });
+});
+
+const fileInput = document.querySelector("input[type='file']");
+if (fileInput) {
+    fileInput.addEventListener("change", () => {
+        if (fileInput.files.length > 0) {
+            alert(fileInput.files[0].name + " selected.");
+        }
+    });
+}
+</script>
+
+</body>
+</html>
