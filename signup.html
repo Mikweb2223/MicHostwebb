@@ -156,7 +156,7 @@ const isPhpServer = window.location.protocol.startsWith("http") &&
     (window.location.port === "" || window.location.port === "80" || window.location.port === "443" || window.location.port === "8000");
 const registerEndpoint = isFileUrl
     ? null
-    : new URL("php/auth/register.php", window.location.href).href;
+    : "https://michost.infinityfree.io/php/auth/register.php";
 
 if (form) {
     form.addEventListener("submit", async function (e) {
