@@ -216,65 +216,82 @@ if (form) {
         `;
         btn.disabled = true;
 
-        try {
-            if (isFileUrl) {
-                throw new Error("Open this page through the PHP server, for example http://localhost:8000/signup.html. Opening the HTML file directly cannot run the PHP backend.");
-            }
 
-            if (!registerEndpoint) {
-                throw new Error("PHP backend URL is unavailable. Start the project using PHP on port 8000 and reload the page.");
-            }
+try {
+    if (isFileUrl) {
+        throw new Error(
+            "Please open MicHost through its website: https://michost.netlify.app/signup.html"
+        );
+    }
 
-            let response;
-            try {
-                response = await fetch(registerEndpoint, {
-                    method: "POST",
-                    body: formData,
-                    credentials: "include"
-                });
-            } catch (networkError) {
-                throw new Error("Cannot reach the PHP backend. Start the project server with PHP on port 8000 and open the page through http://localhost:8000/signup.html.");
-            }
+    if (!registerEndpoint) {
+        throw new Error("MicHost backend URL is missing.");
+    }
 
-            const text = await response.text();
+    let response;
 
-            if (response.status === 405) {
-                throw new Error("The PHP registration endpoint was not found. Make sure the project server is running on port 8000.");
-            }
+    try {
+        response = await fetch(registerEndpoint, {
+            method: "POST",
+            body: formData,
+            credentials: "include"
+        });
+    } catch (networkError) {
+        console.error("Connection error:", networkError);
+        throw new Error(
+            "Cannot connect to MicHost server. Please check the backend connection and CORS settings."
+        );
+    }
 
-            if (!text || text.trim() === "") {
-                throw new Error(response.statusText || `Empty response (status ${response.status})`);
-            }
+    const text = await response.text();
 
-            let data;
-            try {
-                data = JSON.parse(text);
-            } catch (parseErr) {
-                // Backend returned non-JSON (maybe an error page). Surface it to the user.
-                console.error('Non-JSON response:', text);
-                throw new Error(text.length > 200 ? text.slice(0,200) + '...' : text);
-            }
+    console.log("Server status:", response.status);
+    console.log("Server response:", text);
 
-            if (!data || !data.success) {
-                throw new Error(data?.message || "Registration failed.");
-            }
+    if (!text || text.trim() === "") {
+        throw new Error(
+            `The server returned an empty response (status ${response.status}).`
+        );
+    }
 
-            alert(data.message || "Registration Successful!");
-            form.reset();
-            window.location.href = "login.html";
-        } catch (error) {
-            console.error("Registration error:", error);
-            alert(error.message || "Unable to register at the moment.");
-            btn.disabled = false;
-            btn.innerHTML = `
-                Create Account
-                <span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </span>
-            `;
-        }
-    });
+    let data;
+
+    try {
+        data = JSON.parse(text);
+    } catch (parseErr) {
+        console.error("Invalid server response:", text);
+        throw new Error(
+            "The server returned an invalid response: " +
+            text.slice(0, 200)
+        );
+    }
+
+    if (!response.ok || !data.success) {
+        throw new Error(
+            data.message || `Registration failed (status ${response.status}).`
+        );
+    }
+
+    alert(data.message || "Registration successful!");
+
+    form.reset();
+    window.location.href = "login.html";
+
+} catch (error) {
+    console.error("Registration error:", error);
+
+    alert(error.message || "Unable to register at the moment.");
+
+} finally {
+    btn.disabled = false;
+    btn.innerHTML = `
+        Create Account
+        <span>
+            <i class="fa-solid fa-arrow-right"></i>
+        </span>
+    `;
 }
+
 
 const fields = document.querySelectorAll(".field");
 fields.forEach(field => {
