@@ -197,17 +197,21 @@ if (loginForm) {
             return;
         }
 
-        try {
-            if (isFileUrl) {
-                throw new Error("Open this page through the PHP server, for example http://localhost:8000/login.html. Opening the file directly cannot access the backend.");
-            }
+       try {
+    if (isFileUrl) {
+        throw new Error(
+            "Please open MicHost through https://michost.netlify.app/login.html"
+        );
+    }
 
-            const response = await fetch(`${apiBase}/php/auth/login.php`, {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                body: new URLSearchParams({ email, password }),
-                credentials: "include"
-            });
+    const response = await fetch(`${apiBase}/php/auth/login.php`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: new URLSearchParams({ email, password }),
+        credentials: "include"
+    });
 
             const data = await response.json();
 
