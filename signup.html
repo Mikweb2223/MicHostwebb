@@ -229,7 +229,8 @@ try {
         throw new Error("MicHost backend URL is missing.");
     }
 
-    let response;
+
+let response;
 
 try {
     const formBody = new URLSearchParams();
@@ -249,12 +250,12 @@ try {
         credentials: "include"
     });
 
-} catch (networkError) { {
-        console.error("Connection error:", networkError);
-        throw new Error(
-            "Cannot connect to MicHost server. Please check the backend connection and CORS settings."
-        );
-    }
+} catch (networkError) {
+    console.error("Connection error:", networkError);
+    throw new Error(
+        "Cannot connect to MicHost server. Please check the backend connection and CORS settings."
+    );
+}
 
     const text = await response.text();
 
