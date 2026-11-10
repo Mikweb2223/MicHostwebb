@@ -230,13 +230,25 @@ try {
 
     let response;
 
-    try {
-        response = await fetch(registerEndpoint, {
-            method: "POST",
-            body: formData,
-            credentials: "include"
-        });
-    } catch (networkError) {
+try {
+    const formBody = new URLSearchParams();
+
+    for (const [key, value] of formData.entries()) {
+        if (typeof value === "string") {
+            formBody.append(key, value);
+        }
+    }
+
+    response = await fetch(registerEndpoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formBody.toString(),
+        credentials: "include"
+    });
+
+} catch (networkError) { {
         console.error("Connection error:", networkError);
         throw new Error(
             "Cannot connect to MicHost server. Please check the backend connection and CORS settings."
