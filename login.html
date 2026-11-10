@@ -177,9 +177,7 @@ tabs.forEach(tab => {
 
 const loginForm = document.getElementById("loginForm");
 const isFileUrl = window.location.protocol === "file:";
-const apiBase = window.location.port === "5500"
-    ? `${window.location.protocol}//${window.location.hostname}:8000`
-    : "";
+const apiBase = "https://michost.infinityfree.io";
 
 if (loginForm) {
     loginForm.addEventListener("submit", async function (e) {
