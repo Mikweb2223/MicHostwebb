@@ -161,6 +161,7 @@ const registerEndpoint = isFileUrl
 if (form) {
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
+console.log("MICHOST SIGNUP HANDLER RUNNING");
 
         const formData = new FormData(form);
         const fullName = (formData.get("full_name") || "").toString().trim();
